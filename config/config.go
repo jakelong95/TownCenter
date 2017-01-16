@@ -9,7 +9,7 @@ import
 type Root struct
 {
 	SQL		MySQL	`json:"mysql"`
-	Port	string	'json:"port"`
+	Port	string	`json:"port"`
 }
 
 type MySQL struct
