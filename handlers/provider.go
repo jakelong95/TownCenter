@@ -1,15 +1,12 @@
 package handlers
 
-import
-(
-	"github.com/pborman/uuid"
+import (
 	"gopkg.in/gin-gonic/gin.v1"
 	
-	"github.com/jakelong95/TownCenter/gateways"
+	"github.com/ghmeier/bloodlines/gateways"
 )
 
-type ProviderI struct
-{
+type ProviderI interface {
 	New(ctx *gin.Context)
 	ViewAll(ctx *gin.Context)
 	View(ctx *gin.Context)
@@ -17,46 +14,39 @@ type ProviderI struct
 	Delete(ctx *gin.Context)
 }
 
-type Provider struct
-{
-	sql *gateways.Sql
+type Provider struct {
+	sql gateways.SQL
 }
 
-func NewProvider(sql gateways.SQL) *Provider
-{
+func NewProvider(sql gateways.SQL) ProviderI {
 	return &Provider{sql: sql}
 }
 
-func (p *Provider) New(ctx *gin.Context)
-{
+func (p *Provider) New(ctx *gin.Context) {
 	//TODO
 	
 	ctx.JSON(200, empty())
 }
 
-func (p *Provider) ViewAll(ctx *gin.Context)
-{
+func (p *Provider) ViewAll(ctx *gin.Context) {
 	//TODO
 	
 	ctx.JSON(200, empty())
 }
 
-func (p *Provider) View(ctx *gin.Context)
-{
+func (p *Provider) View(ctx *gin.Context) {
 	//TODO
 	
 	ctx.JSON(200, empty())
 }
 
-func (p *Provider) Update(ctx *gin.Context)
-{
+func (p *Provider) Update(ctx *gin.Context) {
 	//TODO
 	
 	ctx.JSON(200, empty())
 }
 
-func (p *Provider) Delete(ctx *gin.Context)
-{
+func (p *Provider) Delete(ctx *gin.Context) {
 	//TODO
 	
 	ctx.JSON(200, empty())
