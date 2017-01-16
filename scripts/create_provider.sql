@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS provider;
+CREATE TABLE provider(
+	id VARCHAR(36) NOT NULL PRIMARY KEY,
+	name VARCHAR(30) NOT NULL,
+	email VARCHAR(200) NOT NULL,
+	phone VARCHAR(12),
+	addressLine1 VARCHAR(200) NOT NULL,
+	addressLine2 VARCHAR(200) NOT NULL,
+	addressCity VARCHAR(30) NOT NULL,
+	addressZip VARCHAR(10) NOT NULL,
+	addressCountry VARCHAR(20) NOT NULL,
+);
