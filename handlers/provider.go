@@ -1,9 +1,10 @@
 package handlers
 
 import (
+	"gopkg.in/alexcesaro/statsd.v2"
 	"gopkg.in/gin-gonic/gin.v1"
-	
-	"github.com/ghmeier/bloodlines/gateways"
+
+	"github.com/ghmeier/bloodlines/handlers"
 )
 
 type ProviderI interface {
@@ -15,39 +16,42 @@ type ProviderI interface {
 }
 
 type Provider struct {
-	sql gateways.SQL
+	*handlers.BaseHandler
 }
 
-func NewProvider(sql gateways.SQL) ProviderI {
-	return &Provider{sql: sql}
+func NewProvider(ctx *handlers.GatewayContext) ProviderI {
+	stats := ctx.Stats.Clone(statsd.Prefix("api.provider"))
+	return &Provider{
+		BaseHandler: &handlers.BaseHandler{Stats: stats},
+	}
 }
 
 func (p *Provider) New(ctx *gin.Context) {
 	//TODO
-	
-	ctx.JSON(200, empty())
+
+	p.Success(ctx, nil)
 }
 
 func (p *Provider) ViewAll(ctx *gin.Context) {
 	//TODO
-	
-	ctx.JSON(200, empty())
+
+	p.Success(ctx, nil)
 }
 
 func (p *Provider) View(ctx *gin.Context) {
 	//TODO
-	
-	ctx.JSON(200, empty())
+
+	p.Success(ctx, nil)
 }
 
 func (p *Provider) Update(ctx *gin.Context) {
 	//TODO
-	
-	ctx.JSON(200, empty())
+
+	p.Success(ctx, nil)
 }
 
 func (p *Provider) Delete(ctx *gin.Context) {
 	//TODO
-	
-	ctx.JSON(200, empty())
+
+	p.Success(ctx, nil)
 }
