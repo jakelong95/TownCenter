@@ -1,12 +1,13 @@
 package handlers
 
 import (
+	"gopkg.in/alexcesaro/statsd.v2"
 	"gopkg.in/gin-gonic/gin.v1"
-	
-	"github.com/ghmeier/bloodlines/gateways"
+
+	"github.com/ghmeier/bloodlines/handlers"
 )
 
-type ConsumerI interface  {
+type ConsumerI interface {
 	New(ctx *gin.Context)
 	ViewAll(ctx *gin.Context)
 	View(ctx *gin.Context)
@@ -15,39 +16,42 @@ type ConsumerI interface  {
 }
 
 type Consumer struct {
-	sql gateways.SQL
+	*handlers.BaseHandler
 }
 
-func NewConsumer(sql gateways.SQL) ConsumerI {
-	return &Consumer{sql: sql}
+func NewConsumer(ctx *handlers.GatewayContext) ConsumerI {
+	stats := ctx.Stats.Clone(statsd.Prefix("api.consumer"))
+	return &Consumer{
+		BaseHandler: &handlers.BaseHandler{Stats: stats},
+	}
 }
 
 func (c *Consumer) New(ctx *gin.Context) {
 	//TODO
-	
-	ctx.JSON(200, empty())
+
+	c.Success(ctx, nil)
 }
 
 func (c *Consumer) ViewAll(ctx *gin.Context) {
 	//TODO
-	
-	ctx.JSON(200, empty())
+
+	c.Success(ctx, nil)
 }
 
 func (c *Consumer) View(ctx *gin.Context) {
 	//TODO
-	
-	ctx.JSON(200, empty())
+
+	c.Success(ctx, nil)
 }
 
 func (c *Consumer) Update(ctx *gin.Context) {
 	//TODO
-	
-	ctx.JSON(200, empty())
+
+	c.Success(ctx, nil)
 }
 
 func (c *Consumer) Delete(ctx *gin.Context) {
 	//TODO
-	
-	ctx.JSON(200, empty())
+
+	c.Success(ctx, nil)
 }
