@@ -15,8 +15,8 @@ import (
 /* TownCenter is the main server object which routes the requests */
 type TownCenter struct {
 	router   *gin.Engine
-	consumer handlers.ConsumerI
-	provider handlers.ProviderI
+	consumer handlers.UserI
+	provider handlers.RoasterI
 }
 
 /* Creates a ready-to-run TownCenter struct from the given config */
@@ -42,8 +42,8 @@ func New(config *config.Root) (*TownCenter, error) {
 	}
 
 	tc := &TownCenter{
-		consumer: handlers.NewConsumer(ctx),
-		provider: handlers.NewProvider(ctx),
+		user:    handlers.NewUser(ctx),
+		roaster: handlers.NewRoaster(ctx),
 	}
 
 	InitRouter(tc)
@@ -54,22 +54,22 @@ func New(config *config.Root) (*TownCenter, error) {
 func InitRouter(tc *TownCenter) {
 	tc.router = gin.Default()
 
-	consumer := tc.router.Group("/api/consumer")
+	user := tc.router.Group("/api/user")
 	{
-		consumer.POST("", tc.consumer.New)
-		consumer.GET("", tc.consumer.ViewAll)
-		consumer.PATCH("/:consumerId", tc.consumer.Update)
-		consumer.DELETE("/:consumerId", tc.consumer.Delete)
-		consumer.GET("/:consumerId", tc.consumer.View)
+		user.POST("", tc.user.New)
+		user.GET("", tc.user.ViewAll)
+		user.PATCH("/:userId", tc.user.Update)
+		user.DELETE("/:userId", tc.user.Delete)
+		user.GET("/:userId", tc.user.View)
 	}
 
-	provider := tc.router.Group("/api/provider")
+	roaster := tc.router.Group("/api/roaster")
 	{
-		provider.POST("", tc.provider.New)
-		provider.GET("", tc.provider.ViewAll)
-		provider.PATCH("/:providerId", tc.provider.Update)
-		provider.DELETE("/:providerId", tc.provider.Delete)
-		provider.GET("/:providerId", tc.provider.View)
+		roaster.POST("", tc.roaster.New)
+		roaster.GET("", tc.roaster.ViewAll)
+		roaster.PATCH("/:roasterId", tc.roaster.Update)
+		roaster.DELETE("/:roasterId", tc.roaster.Delete)
+		roaster.GET("/:roasterId", tc.roaster.View)
 	}
 }
 

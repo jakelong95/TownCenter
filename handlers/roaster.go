@@ -7,7 +7,7 @@ import (
 	"github.com/ghmeier/bloodlines/handlers"
 )
 
-type ProviderI interface {
+type RoasterI interface {
 	New(ctx *gin.Context)
 	ViewAll(ctx *gin.Context)
 	View(ctx *gin.Context)
@@ -15,42 +15,42 @@ type ProviderI interface {
 	Delete(ctx *gin.Context)
 }
 
-type Provider struct {
+type Roaster struct {
 	*handlers.BaseHandler
 }
 
-func NewProvider(ctx *handlers.GatewayContext) ProviderI {
-	stats := ctx.Stats.Clone(statsd.Prefix("api.provider"))
-	return &Provider{
+func NewRoaster(ctx *handlers.GatewayContext) RoasterI {
+	stats := ctx.Stats.Clone(statsd.Prefix("api.roaster"))
+	return &Roaster{
 		BaseHandler: &handlers.BaseHandler{Stats: stats},
 	}
 }
 
-func (p *Provider) New(ctx *gin.Context) {
+func (p *Roaster) New(ctx *gin.Context) {
 	//TODO
 
 	p.Success(ctx, nil)
 }
 
-func (p *Provider) ViewAll(ctx *gin.Context) {
+func (p *Roaster) ViewAll(ctx *gin.Context) {
 	//TODO
 
 	p.Success(ctx, nil)
 }
 
-func (p *Provider) View(ctx *gin.Context) {
+func (p *Roaster) View(ctx *gin.Context) {
 	//TODO
 
 	p.Success(ctx, nil)
 }
 
-func (p *Provider) Update(ctx *gin.Context) {
+func (p *Roaster) Update(ctx *gin.Context) {
 	//TODO
 
 	p.Success(ctx, nil)
 }
 
-func (p *Provider) Delete(ctx *gin.Context) {
+func (p *Roaster) Delete(ctx *gin.Context) {
 	//TODO
 
 	p.Success(ctx, nil)

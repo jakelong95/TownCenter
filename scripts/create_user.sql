@@ -1,7 +1,8 @@
-DROP TABLE IF EXISTS provider;
-CREATE TABLE provider(
+DROP TABLE IF EXISTS user;
+CREATE TABLE user(
 	id VARCHAR(36) NOT NULL PRIMARY KEY,
-	name VARCHAR(30) NOT NULL,
+	firstName VARCHAR(20) NOT NULL,
+	lastName VARCHAR(20) NOT NULL,
 	email VARCHAR(200) NOT NULL,
 	phone VARCHAR(12),
 	addressLine1 VARCHAR(200) NOT NULL,
@@ -9,4 +10,6 @@ CREATE TABLE provider(
 	addressCity VARCHAR(30) NOT NULL,
 	addressZip VARCHAR(10) NOT NULL,
 	addressCountry VARCHAR(20) NOT NULL,
+	roasterId VARCHAR(36),
+	isRoaster SMALLINT,
 );
