@@ -15,8 +15,8 @@ import (
 /* TownCenter is the main server object which routes the requests */
 type TownCenter struct {
 	router   *gin.Engine
-	consumer handlers.UserI
-	provider handlers.RoasterI
+	user     handlers.UserI
+	roaster  handlers.RoasterI
 }
 
 /* Creates a ready-to-run TownCenter struct from the given config */
