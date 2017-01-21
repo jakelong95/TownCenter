@@ -5,6 +5,7 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 
 	"github.com/ghmeier/bloodlines/handlers"
+	"github.com/jakelong95/TownCenter/helpers"
 )
 
 type RoasterI interface {
@@ -17,6 +18,7 @@ type RoasterI interface {
 
 type Roaster struct {
 	*handlers.BaseHandler
+	Helper helpers.RoasterI
 }
 
 func NewRoaster(ctx *handlers.GatewayContext) RoasterI {

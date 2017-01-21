@@ -5,6 +5,8 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 
 	"github.com/ghmeier/bloodlines/handlers"
+	"github.com/jakelong95/TownCenter/helpers"
+	"github.com/jakelong95/TownCenter/models"
 )
 
 type UserI interface {
@@ -17,41 +19,58 @@ type UserI interface {
 
 type User struct {
 	*handlers.BaseHandler
+	Helper helpers.UserI
 }
 
 func NewUser(ctx *handlers.GatewayContext) UserI {
 	stats := ctx.Stats.Clone(statsd.Prefix("api.user"))
 	return &User{
 		BaseHandler: &handlers.BaseHandler{Stats: stats},
+		Helper:      helpers.NewUser(ctx.Sql),
 	}
 }
 
-func (c *User) New(ctx *gin.Context) {
-	//TODO
+func (u *User) New(ctx *gin.Context) {
+	var json models.User
 
-	c.Success(ctx, nil)
+	err := ctx.BindJSON(&json)
+	if err != nil {
+		u.UserError(ctx, "Error: Unable to parse json", err)
+		return
+	}
+
+	user := models.NewUser(json.PassHash, json.FirstName, json.LastName, json.Email, json.Phone,
+		                   json.AddressLine1, json.AddressLine2, json.AddressCity, json.AddressState, json.AddressZip,
+		                   json.AddressCountry)
+	err = u.Helper.Insert(user)
+	if err != nil {
+		u.ServerError(ctx, err, json)
+		return
+	}
+
+	u.Success(ctx, user)
 }
 
-func (c *User) ViewAll(ctx *gin.Context) {
+func (u *User) ViewAll(ctx *gin.Context) {
 	//TODO
 
-	c.Success(ctx, nil)
+	u.Success(ctx, nil)
 }
 
-func (c *User) View(ctx *gin.Context) {
+func (u *User) View(ctx *gin.Context) {
 	//TODO
 
-	c.Success(ctx, nil)
+	u.Success(ctx, nil)
 }
 
-func (c *User) Update(ctx *gin.Context) {
+func (u *User) Update(ctx *gin.Context) {
 	//TODO
 
-	c.Success(ctx, nil)
+	u.Success(ctx, nil)
 }
 
-func (c *User) Delete(ctx *gin.Context) {
+func (u *User) Delete(ctx *gin.Context) {
 	//TODO
 
-	c.Success(ctx, nil)
+	u.Success(ctx, nil)
 }
