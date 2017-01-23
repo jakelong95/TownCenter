@@ -57,8 +57,10 @@ func (u *User) New(ctx *gin.Context) {
 }
 
 func (u *User) ViewAll(ctx *gin.Context) {
+	//Use paging when getting lists of users
 	offset, limit := u.GetPaging(ctx)
 
+	//Query the database for all users
 	users, err := u.Helper.GetAll(offset, limit)
 	if err != nil {
 		u.ServerError(ctx, err, users)
