@@ -4,6 +4,8 @@ import (
 	"gopkg.in/alexcesaro/statsd.v2"
 	"gopkg.in/gin-gonic/gin.v1"
 
+	"strings"
+
 	"github.com/ghmeier/bloodlines/handlers"
 	"github.com/jakelong95/TownCenter/helpers"
 	"github.com/jakelong95/TownCenter/models"
@@ -67,6 +69,11 @@ func (u *User) ViewAll(ctx *gin.Context) {
 		return
 	}
 
+	//Don't pass the password hashes back
+	for _, user := range users {
+		user.PassHash = ""
+	}
+
 	u.Success(ctx, users)
 }
 
@@ -80,23 +87,69 @@ func (u *User) View(ctx *gin.Context) {
 		return
 	}
 
+	//Don't pass the password hash back
+	user.PassHash = ""
+
 	u.Success(ctx, user)
 }
 
 func (u *User) Update(ctx *gin.Context) {
-	//TODO
+	userId := ctx.Param("userId")
 
-	u.Success(ctx, nil)
+	//Bind the json to a user object
+	var json models.User
+	err := ctx.BindJSON(&json)
+	if err != nil {
+		u.UserError(ctx, "Error: Unable to parse json", err)
+		return
+	}
+
+	//Update the user in the database
+	err = u.Helper.Update(&json, userId)
+	if err != nil {
+		u.ServerError(ctx, err, userId)
+		return
+	}
+
+	//Don't pass the password hash bash
+	json.PassHash = ""
+
+	u.Success(ctx, json)
 }
 
 func (u *User) Delete(ctx *gin.Context) {
-	//TODO
+	userId := ctx.Param("userId")
+
+	//Delete the user from the database
+	err := u.Helper.Delete(userId)
+	if err != nil {
+		u.ServerError(ctx, err, userId)
+		return
+	}
 
 	u.Success(ctx, nil)
 }
 
 func (u *User) Login(ctx *gin.Context) {
-	//TODO: ALso return user id
+	userId := ctx.Param("userId")
+	passHash := ctx.Query("passHash")
 
-	u.Success(ctx, nil)
+	//Get the user from the database
+	user, err := u.Helper.GetByID(userId)
+	if err != nil {
+		u.ServerError(ctx, err, userId)
+		return
+	}
+
+	//Don't pass the password hash back
+	tmpHash := user.PassHash
+	user.PassHash = ""
+
+	//Compare the password hashes
+	compare := strings.Compare(tmpHash, passHash)
+	if  compare == 0 {
+		u.Success(ctx, user)
+	} else {
+		u.UserError(ctx, "Error: Incorrect login credentials", nil)
+	}
 }

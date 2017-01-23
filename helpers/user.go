@@ -16,7 +16,8 @@ type UserI interface {
 	GetByID(string) (*models.User, error)
 	GetAll(int, int) ([]*models.User, error)
 	Insert(*models.User) error
-	Update(*models.User) error	
+	Update(*models.User, string) error	
+	Delete(string) error
 }
 
 type User struct {
@@ -38,9 +39,6 @@ func (u *User) GetByID(id string) (*models.User, error) {
 		return nil, err
 	}
 
-	//Don't pass the password hash around
-	users[0].PassHash = ""
-
 	return users[0], err
 }
 
@@ -53,11 +51,6 @@ func (u *User) GetAll(offset int, limit int) ([]*models.User, error) {
 	users, err := models.UserFromSQL(rows)
 	if err != nil {
 		return nil, err
-	}
-
-	//Don't pass the password hash around
-	for _, user := range users {
-		user.PassHash = ""
 	}
 
 	return users, err
@@ -85,7 +78,7 @@ func (u *User) Insert(user *models.User) error {
 	return err
 }
 
-func (u *User) Update(user *models.User) error {
+func (u *User) Update(user *models.User, id string) error {
 	err := u.sql.Modify(
 		"UPDATE user SET passHash=?, firstName=?, lastName=?, email=?, phone=?, addressLine1=?, addressLine2=?, addressCity=?, addressState=?, addressZip=?, addressCountry=?, roasterId=?, isRoaster=? WHERE id=?",
 		user.PassHash,
@@ -101,8 +94,13 @@ func (u *User) Update(user *models.User) error {
 		user.AddressCountry, 
 		user.RoasterId, 
 		user.IsRoaster,
-		user.ID,
+		id,
 	)
 
+	return err
+}
+
+func (u *User) Delete(id string) error {
+	err := u.sql.Modify("DELETE FROM user WHERE id=?", id)
 	return err
 }
