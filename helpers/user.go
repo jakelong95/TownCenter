@@ -38,6 +38,9 @@ func (u *User) GetByID(id string) (*models.User, error) {
 		return nil, err
 	}
 
+	//Don't pass the password hash around
+	users[0].PassHash = nil
+
 	return users[0], err
 }
 
@@ -50,6 +53,11 @@ func (u *User) GetAll(offset int, limit int) ([]*models.User, error) {
 	users, err := models.UserFromSQL(rows)
 	if err != nil {
 		return nil, err
+	}
+
+	//Don't pass the password hash around
+	for _, user := range users {
+		user.PassHash = nil
 	}
 
 	return users, err
