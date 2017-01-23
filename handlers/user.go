@@ -51,7 +51,7 @@ func (u *User) New(ctx *gin.Context) {
 	}
 
 	//Don't need to pass the password hash back
-	user.PassHash = nil
+	user.PassHash = ""
 
 	u.Success(ctx, user)
 }
