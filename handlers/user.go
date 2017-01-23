@@ -15,6 +15,7 @@ type UserI interface {
 	View(ctx *gin.Context)
 	Update(ctx *gin.Context)
 	Delete(ctx *gin.Context)
+	Login(ctx *gin.Context)
 }
 
 type User struct {
@@ -31,14 +32,15 @@ func NewUser(ctx *handlers.GatewayContext) UserI {
 }
 
 func (u *User) New(ctx *gin.Context) {
+	//Bind the json to a user object
 	var json models.User
-
 	err := ctx.BindJSON(&json)
 	if err != nil {
 		u.UserError(ctx, "Error: Unable to parse json", err)
 		return
 	}
 
+	//Create the new user in the database
 	user := models.NewUser(json.PassHash, json.FirstName, json.LastName, json.Email, json.Phone,
 		                   json.AddressLine1, json.AddressLine2, json.AddressCity, json.AddressState, json.AddressZip,
 		                   json.AddressCountry)
@@ -47,6 +49,9 @@ func (u *User) New(ctx *gin.Context) {
 		u.ServerError(ctx, err, json)
 		return
 	}
+
+	//Don't need to pass the password hash back
+	user.PassHash = nil
 
 	u.Success(ctx, user)
 }
@@ -58,9 +63,16 @@ func (u *User) ViewAll(ctx *gin.Context) {
 }
 
 func (u *User) View(ctx *gin.Context) {
-	//TODO
+	userId := ctx.Param("userId")
+	
+	//Query the database for the user
+	user, err := u.Helper.GetByID(userId)
+	if err != nil {
+		u.ServerError(ctx, err, userId)
+		return
+	}
 
-	u.Success(ctx, nil)
+	u.Success(ctx, user)
 }
 
 func (u *User) Update(ctx *gin.Context) {
@@ -71,6 +83,12 @@ func (u *User) Update(ctx *gin.Context) {
 
 func (u *User) Delete(ctx *gin.Context) {
 	//TODO
+
+	u.Success(ctx, nil)
+}
+
+func (u *User) Login(ctx *gin.Context) {
+	//TODO: ALso return user id
 
 	u.Success(ctx, nil)
 }
