@@ -57,9 +57,15 @@ func (u *User) New(ctx *gin.Context) {
 }
 
 func (u *User) ViewAll(ctx *gin.Context) {
-	//TODO
+	offset, limit := u.GetPaging(ctx)
 
-	u.Success(ctx, nil)
+	users, err := u.Helper.GetAll(offset, limit)
+	if err != nil {
+		u.ServerError(ctx, err, users)
+		return
+	}
+
+	u.Success(ctx, users)
 }
 
 func (u *User) View(ctx *gin.Context) {
