@@ -11,8 +11,8 @@ before_install:
     - go get github.com/mattn/goveralls
 after_sucess:
     - go build
-    - docker build -t jakelong95/TownCenter
-    - docker push jakelong95/TownCenter
+    - docker build -t ghmeier/towncenter
+    - docker push ghmeier/towncenter
 install:
     - godep restore
 notifications:

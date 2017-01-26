@@ -1,6 +1,7 @@
 vendor/
 Godeps/_workspace/
 config.json
+config-dev.json
 TownCenter
 TownCenter.exe
 vendor/
