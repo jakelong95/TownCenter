@@ -9,7 +9,8 @@ type RoasterI interface {
 	GetByID(string) (*models.Roaster, error)
 	GetAll(int, int) ([]*models.Roaster, error)
 	Insert(*models.Roaster) error
-	Update(*models.Roaster) error	
+	Update(*models.Roaster, string) error	
+	Delete(string) error
 }
 
 type Roaster struct {
@@ -26,12 +27,12 @@ func (r *Roaster) GetByID(id string) (*models.Roaster, error) {
 		return nil, err
 	}
 
-	Roasters, err := models.RoasterFromSQL(rows)
+	roasters, err := models.RoasterFromSQL(rows)
 	if err != nil {
 		return nil, err
 	}
 
-	return Roasters[0], err
+	return roasters[0], err
 }
 
 func (r *Roaster) GetAll(offset int, limit int) ([]*models.Roaster, error) {
@@ -50,7 +51,7 @@ func (r *Roaster) GetAll(offset int, limit int) ([]*models.Roaster, error) {
 
 func (r *Roaster) Insert(roaster *models.Roaster) error {
 	err := r.sql.Modify(
-		"INSERT INTO roaster (id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster) VALUE (?,?,?,?,?,?,?,?,?,?)",
+		"INSERT INTO roaster (id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry) VALUE (?,?,?,?,?,?,?,?,?,?)",
 		roaster.ID, 
 		roaster.Name,
 		roaster.Email, 
@@ -66,7 +67,7 @@ func (r *Roaster) Insert(roaster *models.Roaster) error {
 	return err
 }
 
-func (r *Roaster) Update(roaster *models.Roaster) error {
+func (r *Roaster) Update(roaster *models.Roaster, roasterId string) error {
 	err := r.sql.Modify(
 		"UPDATE roaster SET name=?, email=?, phone=?, addressLine1=?, addressLine2=?, addressCity=?, addressState=?, addressZip=?, addressCountry=? WHERE id=?",
 		roaster.Name,
@@ -78,7 +79,13 @@ func (r *Roaster) Update(roaster *models.Roaster) error {
 		roaster.AddressState, 
 		roaster.AddressZip, 
 		roaster.AddressCountry, 
+		roasterId,
 	)
 
+	return err
+}
+
+func (r *Roaster) Delete(id string) error {
+	err := r.sql.Modify("DELETE FROM roaster WHERE id=?", id)
 	return err
 }

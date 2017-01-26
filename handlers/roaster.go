@@ -6,6 +6,7 @@ import (
 
 	"github.com/ghmeier/bloodlines/handlers"
 	"github.com/jakelong95/TownCenter/helpers"
+	"github.com/jakelong95/TownCenter/models"
 )
 
 type RoasterI interface {
@@ -25,35 +26,87 @@ func NewRoaster(ctx *handlers.GatewayContext) RoasterI {
 	stats := ctx.Stats.Clone(statsd.Prefix("api.roaster"))
 	return &Roaster{
 		BaseHandler: &handlers.BaseHandler{Stats: stats},
+		Helper:      helpers.NewRoaster(ctx.Sql),
 	}
 }
 
-func (p *Roaster) New(ctx *gin.Context) {
-	//TODO
+func (r *Roaster) New(ctx *gin.Context) {
+	//Bind the json to a roaster object
+	var json models.Roaster
+	err := ctx.BindJSON(&json)
+	if err != nil {
+		r.UserError(ctx, "Error: Unable to parse json", err)
+		return
+	}
 
-	p.Success(ctx, nil)
+	//Create the new roaster in the database
+	roaster := models.NewRoaster(json.Name, json.Email, json.Phone, json.AddressLine1, json.AddressLine2, json.AddressCity, json.AddressState, json.AddressZip, json.AddressCountry)
+	err = r.Helper.Insert(roaster)
+	if err != nil {
+		r.ServerError(ctx, err, json)
+		return
+	}
+
+	r.Success(ctx, roaster)
 }
 
-func (p *Roaster) ViewAll(ctx *gin.Context) {
-	//TODO
+func (r *Roaster) ViewAll(ctx *gin.Context) {
+	//Use paging when getting lists of roasters
+	offset, limit := r.GetPaging(ctx)
 
-	p.Success(ctx, nil)
+	//Query the database for all roasters
+	roasters, err := r.Helper.GetAll(offset, limit)
+	if err != nil {
+		r.ServerError(ctx, err, roasters)
+		return
+	}
+
+	r.Success(ctx, roasters)
 }
 
-func (p *Roaster) View(ctx *gin.Context) {
-	//TODO
+func (r *Roaster) View(ctx *gin.Context) {
+	roasterId := ctx.Param("roasterId")
+	
+	//Query the database for the roaster
+	roaster, err := r.Helper.GetByID(roasterId)
+	if err != nil {
+		r.ServerError(ctx, err, roasterId)
+		return
+	}
 
-	p.Success(ctx, nil)
+	r.Success(ctx, roaster)
 }
 
-func (p *Roaster) Update(ctx *gin.Context) {
-	//TODO
+func (r *Roaster) Update(ctx *gin.Context) {
+	roasterId := ctx.Param("roasterId")
 
-	p.Success(ctx, nil)
+	//Bind the json to a roaster object
+	var json models.Roaster
+	err := ctx.BindJSON(&json)
+	if err != nil {
+		r.UserError(ctx, "Error: Unable to parse json", err)
+		return
+	}
+
+	//Update the roaster in the database
+	err = r.Helper.Update(&json, roasterId)
+	if err != nil {
+		r.ServerError(ctx, err, roasterId)
+		return
+	}
+
+	r.Success(ctx, json)
 }
 
-func (p *Roaster) Delete(ctx *gin.Context) {
-	//TODO
+func (r *Roaster) Delete(ctx *gin.Context) {
+	roasterId := ctx.Param("roasterId")
 
-	p.Success(ctx, nil)
+	//Delete the roaster from the database
+	err := r.Helper.Delete(roasterId)
+	if err != nil {
+		r.ServerError(ctx, err, roasterId)
+		return
+	}
+
+	r.Success(ctx, nil)
 }
