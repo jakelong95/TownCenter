@@ -58,7 +58,7 @@ func InitRouter(tc *TownCenter) {
 	{
 		user.POST("", tc.user.New)
 		user.GET("", tc.user.ViewAll)
-		user.PATCH("/:userId", tc.user.Update)
+		user.PUT("/:userId", tc.user.Update)
 		user.DELETE("/:userId", tc.user.Delete)
 		user.GET("/:userId", tc.user.View)
 		user.POST("/:userId/login", tc.user.Login)
@@ -68,7 +68,7 @@ func InitRouter(tc *TownCenter) {
 	{
 		roaster.POST("", tc.roaster.New)
 		roaster.GET("", tc.roaster.ViewAll)
-		roaster.PATCH("/:roasterId", tc.roaster.Update)
+		roaster.PUT("/:roasterId", tc.roaster.Update)
 		roaster.DELETE("/:roasterId", tc.roaster.Delete)
 		roaster.GET("/:roasterId", tc.roaster.View)
 	}
