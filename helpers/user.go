@@ -104,3 +104,17 @@ func (u *User) Delete(id string) error {
 	err := u.sql.Modify("DELETE FROM user WHERE id=?", id)
 	return err
 }
+
+func (u *User) GetByEmail(email string) (*models.User, error) {
+	rows, err := u.sql.Select("SELECT * FROM user WHERE email=?", email)
+	if err != nil {
+		return nil, err
+	}
+
+	users, err := models.UserFromSQL(rows)
+	if err != nil {
+		return nil, err
+	}
+
+	return users[0], err
+}

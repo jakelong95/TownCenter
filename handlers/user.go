@@ -131,11 +131,11 @@ func (u *User) Delete(ctx *gin.Context) {
 }
 
 func (u *User) Login(ctx *gin.Context) {
-	userId := ctx.Param("userId")
+	email := ctx.Query("email")
 	passHash := ctx.Query("passHash")
 
 	//Get the user from the database
-	user, err := u.Helper.GetByID(userId)
+	user, err := u.Helper.GetByEmail(email)
 	if err != nil {
 		u.ServerError(ctx, err, userId)
 		return
