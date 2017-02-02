@@ -14,9 +14,9 @@ import (
 
 /* TownCenter is the main server object which routes the requests */
 type TownCenter struct {
-	router   *gin.Engine
-	user     handlers.UserI
-	roaster  handlers.RoasterI
+	router  *gin.Engine
+	user    handlers.UserI
+	roaster handlers.RoasterI
 }
 
 /* Creates a ready-to-run TownCenter struct from the given config */
@@ -53,6 +53,7 @@ func New(config *config.Root) (*TownCenter, error) {
 
 func InitRouter(tc *TownCenter) {
 	tc.router = gin.Default()
+	tc.router.Use(h.GetCors())
 
 	user := tc.router.Group("/api/user")
 	{
