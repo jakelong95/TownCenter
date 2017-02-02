@@ -137,7 +137,7 @@ func (u *User) Login(ctx *gin.Context) {
 	//Get the user from the database
 	user, err := u.Helper.GetByEmail(email)
 	if err != nil {
-		u.ServerError(ctx, err, userId)
+		u.ServerError(ctx, err, email)
 		return
 	}
 

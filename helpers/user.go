@@ -18,6 +18,7 @@ type UserI interface {
 	Insert(*models.User) error
 	Update(*models.User, string) error	
 	Delete(string) error
+	GetByEmail(string) (*models.User, error)
 }
 
 type User struct {
