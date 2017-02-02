@@ -1,9 +1,7 @@
 {
 	"ImportPath": "github.com/jakelong95/TownCenter",
 	"GoVersion": "go1.6.3",
-	"Packages": [
-		"./..."
-	],
+	"GodepVersion": "v77",
 	"Deps": [
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/config",
@@ -57,6 +55,10 @@
 			"Rev": "ee05b128a739a0fb76c7ebd3ae4810c1de808d6d"
 		},
 		{
+			"ImportPath": "github.com/mattn/go-isatty",
+			"Rev": "30a891c33c7cde7b02a981314b4228ec99380cca"
+		},
+		{
 			"ImportPath": "github.com/pborman/uuid",
 			"Comment": "v1.0-17-g3d4f2ba",
 			"Rev": "3d4f2ba23642d3cfd06bd4b54cf03d99d95c0f1b"
@@ -72,32 +74,191 @@
 			"Rev": "d087004b4d47c2a378ade9eb3957571114b91493"
 		},
 		{
+			"ImportPath": "github.com/sendgrid/sendgrid-go/helpers/mail",
+			"Comment": "v3.3.1-1-gd087004",
+			"Rev": "d087004b4d47c2a378ade9eb3957571114b91493"
+		},
+		{
 			"ImportPath": "github.com/streadway/amqp",
 			"Rev": "4da4cfa085c174b489ec35cf1e29ffb147d45298"
 		},
 		{
-			"ImportPath": "github.com/stretchr/testify/assert",
-			"Comment": "v1.1.4-6-g18a02ba",
-			"Rev": "18a02ba4a312f95da08ff4cfc0055750ce50ae9e"
-		},
-		{
-			"ImportPath": "github.com/stretchr/testify/vendor/github.com/davecgh/go-spew/spew",
-			"Comment": "v1.1.4-6-g18a02ba",
-			"Rev": "18a02ba4a312f95da08ff4cfc0055750ce50ae9e"
-		},
-		{
-			"ImportPath": "github.com/stretchr/testify/vendor/github.com/pmezard/go-difflib/difflib",
-			"Comment": "v1.1.4-6-g18a02ba",
-			"Rev": "18a02ba4a312f95da08ff4cfc0055750ce50ae9e"
-		},
-		{
 			"ImportPath": "github.com/stripe/stripe-go",
-			"Comment": "v19.2.0",
-			"Rev": "3f2707ab5115e7c54c70a77aabcb386d6f405810"
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/account",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/balance",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/bankaccount",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/bitcoinreceiver",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/bitcointransaction",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/card",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/charge",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/client",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/countryspec",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/coupon",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/customer",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/discount",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/dispute",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/event",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/fee",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/feerefund",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/fileupload",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/invoice",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/invoiceitem",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/order",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/orderitem",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/orderreturn",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/paymentsource",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/plan",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/product",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/recipient",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/refund",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/reversal",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/sku",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/source",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/sub",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/token",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "github.com/stripe/stripe-go/transfer",
+			"Comment": "v19.3.0",
+			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
 		},
 		{
 			"ImportPath": "golang.org/x/net/context",
 			"Rev": "65dfc08770ce66f74becfdff5f8ab01caef4e946"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "d75a52659825e75fff6158388dddc6a5b04f9ba5"
 		},
 		{
 			"ImportPath": "gopkg.in/alexcesaro/statsd.v2",
