@@ -15,5 +15,7 @@ after_sucess:
     - docker push ghmeier/towncenter
 install:
     - godep restore
+script:
+    - $HOME/gopath/bin/goveralls -service=travis-ci
 notifications:
   slack: mostlygifs:xU99ulMzejqNTJbFcBEWPCEF

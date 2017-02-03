@@ -22,7 +22,7 @@ func NewRoaster(sql gateways.SQL) *Roaster {
 }
 
 func (r *Roaster) GetByID(id string) (*models.Roaster, error) {
-	rows, err := r.sql.Select("SELECT * FROM roaster WHERE id=?", id)
+	rows, err := r.sql.Select("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry FROM roaster WHERE id=?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func (r *Roaster) GetByID(id string) (*models.Roaster, error) {
 }
 
 func (r *Roaster) GetAll(offset int, limit int) ([]*models.Roaster, error) {
-	rows, err := r.sql.Select("SELECT * FROM roaster ORDER BY id ASC LIMIT ?,?", offset, limit)
+	rows, err := r.sql.Select("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry FROM roaster ORDER BY id ASC LIMIT ?,?", offset, limit)
 	if err != nil {
 		return nil, err
 	}

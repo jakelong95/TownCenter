@@ -30,7 +30,7 @@ func NewUser(sql gateways.SQL) *User {
 }
 
 func (u *User) GetByID(id string) (*models.User, error) {
-	rows, err := u.sql.Select("SELECT * FROM user WHERE id=?", id)
+	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user WHERE id=?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (u *User) GetByID(id string) (*models.User, error) {
 }
 
 func (u *User) GetAll(offset int, limit int) ([]*models.User, error) {
-	rows, err := u.sql.Select("SELECT * FROM user ORDER BY id ASC LIMIT ?,?", offset, limit)
+	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user ORDER BY id ASC LIMIT ?,?", offset, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func (u *User) Delete(id string) error {
 }
 
 func (u *User) GetByEmail(email string) (*models.User, error) {
-	rows, err := u.sql.Select("SELECT * FROM user WHERE email=?", email)
+	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user WHERE email=?", email)
 	if err != nil {
 		return nil, err
 	}
