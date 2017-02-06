@@ -16,6 +16,9 @@ type TownCenterI interface {
 	GetUser(uuid.UUID) (*models.User, error)
 	GetAllUsers(int, int) ([]*models.User, error)
 	UpdateUser(uuid.UUID, *models.User) error
+	GetRoaster(uuid.UUID) (*models.Roaster, error)
+	GetAllRoasters(int, int) ([]*models.Roaster, error)
+	UpdateRoaster(uuid.UUID, *models.Roaster) error
 }
 
 /*TownCenter contains instrumentation for accessing TownCenter service*/
@@ -31,10 +34,10 @@ type TownCenter struct {
 func NewTownCenter(config config.TownCenter) TownCenterI {
 	return &TownCenter{
 		BaseService: g.NewBaseService(),
-		host:	config.Host,
-		port:	config.Port,
-		url:    fmt.Sprintf("https://%s:%s/api/", config.Host, config.Port),
-		client: &http.Client{},
+		host:        config.Host,
+		port:        config.Port,
+		url:         fmt.Sprintf("https://%s:%s/api/", config.Host, config.Port),
+		client:      &http.Client{},
 	}
 }
 
