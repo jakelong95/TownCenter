@@ -61,6 +61,53 @@ func TestUserGetByIDError(t *testing.T) {
 	assert.Error(err)
 }
 
+func TestUserGetByEmail(t *testing.T) {
+	assert := assert.New(t)
+
+	id := uuid.NewUUID()
+	s, mock, _ := sqlmock.New()
+	u := getMockUser(s)
+
+	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user").
+		WithArgs("Email").
+		WillReturnRows(getUserMockRows().AddRow(id.String(), "", "FirstName", "LastName", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", nil, "0"))
+
+	user, err := u.GetByEmail("Email")
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.NoError(err)
+	assert.Equal(user.ID, id)
+	assert.Equal(user.PassHash, "")
+	assert.Equal(user.FirstName, "FirstName")
+	assert.Equal(user.LastName, "LastName")
+	assert.Equal(user.Email, "Email")
+	assert.Equal(user.Phone, "Phone")
+	assert.Equal(user.AddressLine1, "AddressLine1")
+	assert.Equal(user.AddressLine2, "AddressLine2")
+	assert.Equal(user.AddressCity, "AddressCity")
+	assert.Equal(user.AddressState, "AddressState")
+	assert.Equal(user.AddressZip, "AddressZip")
+	assert.Equal(user.AddressCountry, "AddressCountry")
+	assert.Equal(user.RoasterId, uuid.UUID(nil))
+	assert.Equal(user.IsRoaster, 0)
+}
+
+func TestUserGetByEmailError(t *testing.T) {
+	assert := assert.New(t)
+
+	s, mock, _ := sqlmock.New()
+	u := getMockUser(s)
+
+	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user").
+		WithArgs("Email").
+		WillReturnError(fmt.Errorf("This is an error"))
+
+	_, err := u.GetByEmail("Email")
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.Error(err)
+}
+
 func TestUserGetAll(t *testing.T) {
 	assert := assert.New(t)
 
