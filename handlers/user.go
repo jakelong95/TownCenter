@@ -3,8 +3,8 @@ package handlers
 import (
 	"gopkg.in/alexcesaro/statsd.v2"
 	"gopkg.in/gin-gonic/gin.v1"
-
-	"strings"
+	
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/ghmeier/bloodlines/handlers"
 	"github.com/jakelong95/TownCenter/helpers"
@@ -42,8 +42,13 @@ func (u *User) New(ctx *gin.Context) {
 		return
 	}
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(json.PassHash), bcrypt.DefaultCost)
+	if err != nil {
+		u.ServerError(ctx, err, nil)
+	}
+
 	//Create the new user in the database
-	user := models.NewUser(json.PassHash, json.FirstName, json.LastName, json.Email, json.Phone,
+	user := models.NewUser(string(hashedPassword), json.FirstName, json.LastName, json.Email, json.Phone,
 		                   json.AddressLine1, json.AddressLine2, json.AddressCity, json.AddressState, json.AddressZip,
 		                   json.AddressCountry)
 	err = u.Helper.Insert(user)
@@ -132,7 +137,7 @@ func (u *User) Delete(ctx *gin.Context) {
 
 func (u *User) Login(ctx *gin.Context) {
 	email := ctx.Query("email")
-	passHash := ctx.Query("passHash")
+	password := ctx.Query("password")
 
 	//Get the user from the database
 	user, err := u.Helper.GetByEmail(email)
@@ -145,11 +150,15 @@ func (u *User) Login(ctx *gin.Context) {
 	tmpHash := user.PassHash
 	user.PassHash = ""
 
-	//Compare the password hashes
-	compare := strings.Compare(tmpHash, passHash)
-	if  compare == 0 {
+	if err != nil {
+		u.ServerError(ctx, err, email)
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(tmpHash), []byte(password))
+
+	if err == nil {
 		u.Success(ctx, user)
 	} else {
-		u.UserError(ctx, "Error: Incorrect login credentials", nil)
+		u.UserError(ctx, "Incorrect login credentials", nil)
 	}
 }
