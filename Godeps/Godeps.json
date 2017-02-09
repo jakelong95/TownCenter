@@ -4,10 +4,11 @@
 	"GodepVersion": "v77",
 	"Deps": [
 		{
-			"ImportPath": "github.com/DATA-DOG/go-sqlmock",
-			"Comment": "v1.1.4-14-g947ce30",
-			"Rev": "947ce303a7986ba00a8c29f5835c5c58f649f856"
-		},
+                        "ImportPath": "github.com/DATA-DOG/go-sqlmock",
+                        "Comment": "v1.1.4-14-g947ce30",
+                        "Rev": "947ce303a7986ba00a8c29f5835c5c58f649f856"
+                },
+
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/config",
 			"Rev": "226cd7daeefa884b12c387ed398a4da0acbd4368"
@@ -256,6 +257,14 @@
 			"ImportPath": "github.com/stripe/stripe-go/transfer",
 			"Comment": "v19.3.0",
 			"Rev": "e70ebf6a1d2b00d82234e5e0c3957958299bd450"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/bcrypt",
+			"Rev": "dd96d35c1b251a7ef77f057fc5c4f92ea2b285b4"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "dd96d35c1b251a7ef77f057fc5c4f92ea2b285b4"
 		},
 		{
 			"ImportPath": "golang.org/x/net/context",
