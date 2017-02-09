@@ -217,6 +217,42 @@ func TestUpdateError(t *testing.T) {
 	assert.Error(err)
 }
 
+func TestDeleteUser(t *testing.T) {
+	assert := assert.New(t)
+
+	id := uuid.NewUUID()
+	s, mock, _ := sqlmock.New()
+	u := getMockUser(s)
+
+	mock.ExpectPrepare("DELETE FROM user").
+		ExpectExec().
+		WithArgs(id.String()).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	err := u.Delete(id.String())
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.NoError(err)
+}
+
+func TestDeleteUserError(t *testing.T) {
+	assert := assert.New(t)
+
+	id := uuid.NewUUID()
+	s, mock, _ := sqlmock.New()
+	u := getMockUser(s)
+
+	mock.ExpectPrepare("DELETE FROM user").
+		ExpectExec().
+		WithArgs(id.String()).
+		WillReturnError(fmt.Errorf("This is an error"))
+
+	err := u.Delete(id.String())
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.Error(err)
+}
+
 func getDefaultUser() *models.User {
 	return models.NewUser("passhash", "Firstname", "Lastname", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry")
 }
