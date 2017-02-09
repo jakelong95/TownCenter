@@ -10,6 +10,29 @@ type TownCenterI struct {
 	mock.Mock
 }
 
+// GetAllRoasters provides a mock function with given fields: _a0, _a1
+func (_m *TownCenterI) GetAllRoasters(_a0 int, _a1 int) ([]*models.Roaster, error) {
+	ret := _m.Called(_a0, _a1)
+
+	var r0 []*models.Roaster
+	if rf, ok := ret.Get(0).(func(int, int) []*models.Roaster); ok {
+		r0 = rf(_a0, _a1)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*models.Roaster)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(int, int) error); ok {
+		r1 = rf(_a0, _a1)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetAllUsers provides a mock function with given fields: _a0, _a1
 func (_m *TownCenterI) GetAllUsers(_a0 int, _a1 int) ([]*models.User, error) {
 	ret := _m.Called(_a0, _a1)
@@ -26,6 +49,29 @@ func (_m *TownCenterI) GetAllUsers(_a0 int, _a1 int) ([]*models.User, error) {
 	var r1 error
 	if rf, ok := ret.Get(1).(func(int, int) error); ok {
 		r1 = rf(_a0, _a1)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetRoaster provides a mock function with given fields: _a0
+func (_m *TownCenterI) GetRoaster(_a0 uuid.UUID) (*models.Roaster, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *models.Roaster
+	if rf, ok := ret.Get(0).(func(uuid.UUID) *models.Roaster); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Roaster)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uuid.UUID) error); ok {
+		r1 = rf(_a0)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -54,6 +100,20 @@ func (_m *TownCenterI) GetUser(_a0 uuid.UUID) (*models.User, error) {
 	}
 
 	return r0, r1
+}
+
+// UpdateRoaster provides a mock function with given fields: _a0, _a1
+func (_m *TownCenterI) UpdateRoaster(_a0 uuid.UUID, _a1 *models.Roaster) error {
+	ret := _m.Called(_a0, _a1)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(uuid.UUID, *models.Roaster) error); ok {
+		r0 = rf(_a0, _a1)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
 }
 
 // UpdateUser provides a mock function with given fields: _a0, _a1
