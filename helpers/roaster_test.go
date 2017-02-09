@@ -166,6 +166,43 @@ func TestRoasterUpdateError(t *testing.T) {
 	assert.Error(err)
 }
 
+func TestDeleteRoaster(t *testing.T) {
+	assert := assert.New(t)
+
+	id := uuid.NewUUID()
+	s, mock, _ := sqlmock.New()
+	r := getMockRoaster(s)
+
+	mock.ExpectPrepare("DELETE FROM roaster").
+		ExpectExec().
+		WithArgs(id.String()).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	err := r.Delete(id.String())
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.NoError(err)
+}
+
+func TestDeleteRoasterError(t *testing.T) {
+	assert := assert.New(t)
+
+	id := uuid.NewUUID()
+	s, mock, _ := sqlmock.New()
+	r := getMockRoaster(s)
+
+	mock.ExpectPrepare("DELETE FROM roaster").
+		ExpectExec().
+		WithArgs(id.String()).
+		WillReturnError(fmt.Errorf("This is an error"))
+
+	err := r.Delete(id.String())
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.Error(err)
+}
+
+
 func getDefaultRoaster() *models.Roaster {
 	return models.NewRoaster("Name", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry")
 }
