@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jakelong95/TownCenter.svg?branch=master)](https://travis-ci.org/jakelong95/TownCenter)
 [![Coverage Status](https://coveralls.io/repos/github/jakelong95/TownCenter/badge.svg?branch=master)](https://coveralls.io/github/jakelong95/TownCenter?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jakelong95/TownCenter)](https://goreportcard.com/report/github.com/jakelong95/TownCenter)
 
 TownCenter is the user service for Expresso. It handles registering, updating, listing, and getting users.
 
