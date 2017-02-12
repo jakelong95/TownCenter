@@ -52,20 +52,20 @@ func NewTownCenter(config config.TownCenter) TownCenterI {
 func (t *TownCenter) GetUser(id uuid.UUID) (*models.User, error) {
 	url := fmt.Sprintf("%suser/%s", t.url, id.String())
 
-	var user *models.User
+	var user models.User
 	err := t.ServiceSend(http.MethodGet, url, nil, &user)
 	if err != nil {
 		return nil, err
 	}
 
-	return user, nil
+	return &user, nil
 }
 
 /*GetAllUsers gets information about all the users, paginated with an offset and limit per page*/
 func (t *TownCenter) GetAllUsers(offset, limit int) ([]*models.User, error) {
 	url := fmt.Sprintf("%suser?offset=%d&limit=%d", t.url, offset, limit)
 
-	var users []*models.User
+	users := make([]*models.User, 0)
 	err := t.ServiceSend(http.MethodGet, url, nil, &users)
 	if err != nil {
 		return nil, err
@@ -84,20 +84,20 @@ func (t *TownCenter) UpdateUser(id uuid.UUID, user *models.User) error {
 func (t *TownCenter) GetRoaster(id uuid.UUID) (*models.Roaster, error) {
 	url := fmt.Sprintf("%sroaster/%s", t.url, id.String())
 
-	var roaster *models.Roaster
+	var roaster models.Roaster
 	err := t.ServiceSend(http.MethodGet, url, nil, &roaster)
 	if err != nil {
 		return nil, err
 	}
 
-	return roaster, nil
+	return &roaster, nil
 }
 
 /*GetAllRoasters gets information about all the roasters, paginated with an offset and limit per page*/
 func (t *TownCenter) GetAllRoasters(offset, limit int) ([]*models.Roaster, error) {
 	url := fmt.Sprintf("%sroaster?offset=%d&limit=%d", t.url, offset, limit)
 
-	var roasters []*models.Roaster
+	roasters := make([]*models.Roaster, 0)
 	err := t.ServiceSend(http.MethodGet, url, nil, &roasters)
 	if err != nil {
 		return nil, err
