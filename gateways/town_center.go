@@ -33,7 +33,7 @@ type TownCenter struct {
 /*NewTownCenter creates and returns a TownCenter gateway*/
 func NewTownCenter(config config.TownCenter) TownCenterI {
 	var url string
-	if config.Port == "" {
+	if config.Port != "" {
 		url = fmt.Sprintf("http://%s:%s/api/", config.Host, config.Port)
 	} else {
 		url = fmt.Sprintf("https://%s/api/", config.Host)
