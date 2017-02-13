@@ -74,6 +74,11 @@ func (r *Roaster) View(ctx *gin.Context) {
 		return
 	}
 
+	if roaster == nil {
+		r.UserError(ctx, "Error: Roaster does not exist", roasterId)
+		return
+	}
+
 	r.Success(ctx, roaster)
 }
 

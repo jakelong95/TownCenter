@@ -31,6 +31,7 @@ func NewUser(sql gateways.SQL) *User {
 
 func (u *User) GetByID(id string) (*models.User, error) {
 	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user WHERE id=?", id)
+
 	if err != nil {
 		return nil, err
 	}
@@ -38,6 +39,10 @@ func (u *User) GetByID(id string) (*models.User, error) {
 	users, err := models.UserFromSQL(rows)
 	if err != nil {
 		return nil, err
+	}
+
+	if(len(users) == 0) {
+		return nil, nil
 	}
 
 	return users[0], err

@@ -92,6 +92,11 @@ func (u *User) View(ctx *gin.Context) {
 		return
 	}
 
+	if user == nil {
+		u.UserError(ctx, "Error: User does not exist", userId)
+		return
+	}
+
 	//Don't pass the password hash back
 	user.PassHash = ""
 

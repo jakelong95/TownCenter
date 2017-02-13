@@ -32,6 +32,10 @@ func (r *Roaster) GetByID(id string) (*models.Roaster, error) {
 		return nil, err
 	}
 
+	if(len(roasters) == 0) {
+		return nil, nil
+	}
+
 	return roasters[0], err
 }
 
