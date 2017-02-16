@@ -61,6 +61,24 @@ func TestUserGetByIDError(t *testing.T) {
 	assert.Error(err)
 }
 
+func TestUserGetByIDDoesNotExist(t *testing.T) {
+	assert := assert.New(t)
+
+	id := uuid.NewUUID()
+	s, mock, _ := sqlmock.New()
+	u := getMockUser(s)
+
+	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user").
+		WithArgs(id.String()).
+		WillReturnRows(getUserMockRows())
+
+	user, err := u.GetByID(id.String())
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.Nil(user)
+	assert.NoError(err)
+}
+
 func TestUserGetByEmail(t *testing.T) {
 	assert := assert.New(t)
 

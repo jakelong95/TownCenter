@@ -142,13 +142,18 @@ func (u *User) Delete(ctx *gin.Context) {
 }
 
 func (u *User) Login(ctx *gin.Context) {
-	email := ctx.Query("email")
-	password := ctx.Query("password")
+	//Bind the json to a user object
+	var json models.User
+	err := ctx.BindJSON(&json)
+	if err != nil {
+		u.UserError(ctx, "Error: Unable to parse json", err)
+		return
+	}
 
 	//Get the user from the database
-	user, err := u.Helper.GetByEmail(email)
+	user, err := u.Helper.GetByEmail(json.Email)
 	if err != nil {
-		u.ServerError(ctx, err, email)
+		u.ServerError(ctx, err, json.Email)
 		return
 	}
 
@@ -157,10 +162,10 @@ func (u *User) Login(ctx *gin.Context) {
 	user.PassHash = ""
 
 	if err != nil {
-		u.ServerError(ctx, err, email)
+		u.ServerError(ctx, err, json.Email)
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(tmpHash), []byte(password))
+	err = bcrypt.CompareHashAndPassword([]byte(tmpHash), []byte(json.PassHash))
 
 	if err == nil {
 		u.Success(ctx, user)

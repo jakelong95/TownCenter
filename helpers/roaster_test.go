@@ -57,6 +57,24 @@ func TestRoasterGetByIDError(t *testing.T) {
 	assert.Error(err)
 }
 
+func TestRoasterGetByIDDoesNotExist(t *testing.T) {
+	assert := assert.New(t)
+
+	id := uuid.NewUUID()
+	s, mock, _ := sqlmock.New()
+	r := getMockRoaster(s)
+
+	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry FROM roaster").
+		WithArgs(id.String()).
+		WillReturnRows(getRoasterMockRows())
+
+	roaster, err := r.GetByID(id.String())
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.Nil(roaster)
+	assert.NoError(err)
+}
+
 func TestRoasterGetAll(t *testing.T) {
 	assert := assert.New(t)
 
