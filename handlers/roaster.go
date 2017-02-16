@@ -15,6 +15,7 @@ type RoasterI interface {
 	View(ctx *gin.Context)
 	Update(ctx *gin.Context)
 	Delete(ctx *gin.Context)
+	Time() gin.HandlerFunc
 }
 
 type Roaster struct {
@@ -66,7 +67,7 @@ func (r *Roaster) ViewAll(ctx *gin.Context) {
 
 func (r *Roaster) View(ctx *gin.Context) {
 	roasterId := ctx.Param("roasterId")
-	
+
 	//Query the database for the roaster
 	roaster, err := r.Helper.GetByID(roasterId)
 	if err != nil {

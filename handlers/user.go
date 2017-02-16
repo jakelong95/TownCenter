@@ -3,7 +3,7 @@ package handlers
 import (
 	"gopkg.in/alexcesaro/statsd.v2"
 	"gopkg.in/gin-gonic/gin.v1"
-	
+
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/ghmeier/bloodlines/handlers"
@@ -18,6 +18,7 @@ type UserI interface {
 	Update(ctx *gin.Context)
 	Delete(ctx *gin.Context)
 	Login(ctx *gin.Context)
+	Time() gin.HandlerFunc
 }
 
 type User struct {
@@ -49,8 +50,8 @@ func (u *User) New(ctx *gin.Context) {
 
 	//Create the new user in the database
 	user := models.NewUser(string(hashedPassword), json.FirstName, json.LastName, json.Email, json.Phone,
-		                   json.AddressLine1, json.AddressLine2, json.AddressCity, json.AddressState, json.AddressZip,
-		                   json.AddressCountry)
+		json.AddressLine1, json.AddressLine2, json.AddressCity, json.AddressState, json.AddressZip,
+		json.AddressCountry)
 	err = u.Helper.Insert(user)
 	if err != nil {
 		u.ServerError(ctx, err, json)
@@ -84,7 +85,7 @@ func (u *User) ViewAll(ctx *gin.Context) {
 
 func (u *User) View(ctx *gin.Context) {
 	userId := ctx.Param("userId")
-	
+
 	//Query the database for the user
 	user, err := u.Helper.GetByID(userId)
 	if err != nil {

@@ -12,35 +12,35 @@
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/_mocks/gateways",
-			"Rev": "f75b3ae08fc9b7a89007da0d7c11ac626d4a8a8e"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/config",
-			"Rev": "f75b3ae08fc9b7a89007da0d7c11ac626d4a8a8e"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/gateways",
-			"Rev": "f75b3ae08fc9b7a89007da0d7c11ac626d4a8a8e"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/handlers",
-			"Rev": "f75b3ae08fc9b7a89007da0d7c11ac626d4a8a8e"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/helpers",
-			"Rev": "f75b3ae08fc9b7a89007da0d7c11ac626d4a8a8e"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/models",
-			"Rev": "f75b3ae08fc9b7a89007da0d7c11ac626d4a8a8e"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/gateways",
-			"Rev": "276f6a1d936b64222131b88d282901fe858396ca"
+			"Rev": "2560d7390136bd6ea87d531c1865bd653f38b9ce"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/models",
-			"Rev": "276f6a1d936b64222131b88d282901fe858396ca"
+			"Rev": "2560d7390136bd6ea87d531c1865bd653f38b9ce"
 		},
 		{
 			"ImportPath": "github.com/gin-gonic/gin/binding",
@@ -63,7 +63,7 @@
 		},
 		{
 			"ImportPath": "github.com/lcollin/warehouse/models",
-			"Rev": "b20ee27ba75276ff81c07662b5e88439a083b0ad"
+			"Rev": "49da0e8b11e482c2074422a71db02c1994dfd405"
 		},
 		{
 			"ImportPath": "github.com/manucorporat/sse",
@@ -120,11 +120,11 @@
 		},
 		{
 			"ImportPath": "github.com/yuderekyu/covenant/gateways",
-			"Rev": "91b2e17a8b6800f19b64aaeba019a330bee77063"
+			"Rev": "c7ed8c4e827cb8a82146b4961581e83d1bfd3cbb"
 		},
 		{
 			"ImportPath": "github.com/yuderekyu/covenant/models",
-			"Rev": "91b2e17a8b6800f19b64aaeba019a330bee77063"
+			"Rev": "c7ed8c4e827cb8a82146b4961581e83d1bfd3cbb"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/bcrypt",

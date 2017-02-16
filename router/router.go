@@ -57,6 +57,7 @@ func InitRouter(tc *TownCenter) {
 
 	user := tc.router.Group("/api/user")
 	{
+		user.Use(tc.user.Time())
 		user.POST("", tc.user.New)
 		user.GET("", tc.user.ViewAll)
 		user.PUT("/:userId", tc.user.Update)
@@ -67,6 +68,7 @@ func InitRouter(tc *TownCenter) {
 
 	roaster := tc.router.Group("/api/roaster")
 	{
+		roaster.Use(tc.roaster.Time())
 		roaster.POST("", tc.roaster.New)
 		roaster.GET("", tc.roaster.ViewAll)
 		roaster.PUT("/:roasterId", tc.roaster.Update)
