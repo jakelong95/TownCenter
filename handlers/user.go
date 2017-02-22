@@ -94,7 +94,7 @@ func (u *User) View(ctx *gin.Context) {
 	}
 
 	if user == nil {
-		u.UserError(ctx, "Error: User does not exist", userId)
+		u.NotFoundError(ctx, "Error: User with ID " + userId + " does not exist")
 		return
 	}
 
@@ -154,6 +154,11 @@ func (u *User) Login(ctx *gin.Context) {
 	user, err := u.Helper.GetByEmail(json.Email)
 	if err != nil {
 		u.ServerError(ctx, err, json.Email)
+		return
+	}
+
+	if user == nil {
+		u.NotFoundError(ctx, "Error: User with email " + json.Email + " not found")
 		return
 	}
 

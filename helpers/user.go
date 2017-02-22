@@ -16,7 +16,7 @@ type UserI interface {
 	GetByID(string) (*models.User, error)
 	GetAll(int, int) ([]*models.User, error)
 	Insert(*models.User) error
-	Update(*models.User, string) error	
+	Update(*models.User, string) error
 	Delete(string) error
 	GetByEmail(string) (*models.User, error)
 }
@@ -68,16 +68,16 @@ func (u *User) Insert(user *models.User) error {
 		user.ID,
 		user.PassHash,
 		user.FirstName,
-		user.LastName, 
-		user.Email, 
-		user.Phone, 
-		user.AddressLine1, 
-		user.AddressLine2, 
-		user.AddressCity, 
-		user.AddressState, 
-		user.AddressZip, 
-		user.AddressCountry, 
-		user.RoasterId, 
+		user.LastName,
+		user.Email,
+		user.Phone,
+		user.AddressLine1,
+		user.AddressLine2,
+		user.AddressCity,
+		user.AddressState,
+		user.AddressZip,
+		user.AddressCountry,
+		user.RoasterId,
 		user.IsRoaster,
 	)
 
@@ -89,16 +89,16 @@ func (u *User) Update(user *models.User, id string) error {
 		"UPDATE user SET passHash=?, firstName=?, lastName=?, email=?, phone=?, addressLine1=?, addressLine2=?, addressCity=?, addressState=?, addressZip=?, addressCountry=?, roasterId=?, isRoaster=? WHERE id=?",
 		user.PassHash,
 		user.FirstName,
-		user.LastName, 
-		user.Email, 
-		user.Phone, 
-		user.AddressLine1, 
-		user.AddressLine2, 
-		user.AddressCity, 
-		user.AddressState, 
-		user.AddressZip, 
-		user.AddressCountry, 
-		user.RoasterId, 
+		user.LastName,
+		user.Email,
+		user.Phone,
+		user.AddressLine1,
+		user.AddressLine2,
+		user.AddressCity,
+		user.AddressState,
+		user.AddressZip,
+		user.AddressCountry,
+		user.RoasterId,
 		user.IsRoaster,
 		id,
 	)
@@ -120,6 +120,10 @@ func (u *User) GetByEmail(email string) (*models.User, error) {
 	users, err := models.UserFromSQL(rows)
 	if err != nil {
 		return nil, err
+	}
+
+	if(len(users) == 0) {
+		return nil, nil
 	}
 
 	return users[0], err
