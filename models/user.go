@@ -20,7 +20,6 @@ type User struct {
 	AddressZip     string    `json:"addressZip"`
 	AddressCountry string    `json:"addressCountry"`
 	RoasterId      uuid.UUID `json:"roasterId"`
-	IsRoaster	   int       `json:"isRoaster"`
 }
 
 func NewUser(passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry string) *User {
@@ -38,7 +37,6 @@ func NewUser(passHash, firstName, lastName, email, phone, addressLine1, addressL
 		AddressState:   addressState,
 		AddressCountry: addressCountry,
 		RoasterId:      nil,
-		IsRoaster:      0,
 	}
 }
 
@@ -49,7 +47,7 @@ func UserFromSQL(rows *sql.Rows) ([]*User, error) {
 		u := &User{}
 
 		rows.Scan(&u.ID, &u.PassHash, &u.FirstName, &u.LastName, &u.Email, &u.Phone, &u.AddressLine1, &u.AddressLine2,
-			      &u.AddressCity, &u.AddressState, &u.AddressZip, &u.AddressCountry, &u.RoasterId, &u.IsRoaster)
+			      &u.AddressCity, &u.AddressState, &u.AddressZip, &u.AddressCountry, &u.RoasterId)
 
 		users = append(users, u)
 	}

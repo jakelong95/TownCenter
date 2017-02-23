@@ -20,9 +20,9 @@ func TestUserGetByID(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	u := getMockUser(s)
 
-	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user").
+	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId FROM user").
 		WithArgs(id.String()).
-		WillReturnRows(getUserMockRows().AddRow(id.String(), "", "FirstName", "LastName", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", nil, "0"))
+		WillReturnRows(getUserMockRows().AddRow(id.String(), "", "FirstName", "LastName", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", nil))
 
 	user, err := u.GetByID(id.String())
 
@@ -41,7 +41,6 @@ func TestUserGetByID(t *testing.T) {
 	assert.Equal(user.AddressZip, "AddressZip")
 	assert.Equal(user.AddressCountry, "AddressCountry")
 	assert.Equal(user.RoasterId, uuid.UUID(nil))
-	assert.Equal(user.IsRoaster, 0)
 }
 
 func TestUserGetByIDError(t *testing.T) {
@@ -51,7 +50,7 @@ func TestUserGetByIDError(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	u := getMockUser(s)
 
-	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user").
+	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId FROM user").
 		WithArgs(id.String()).
 		WillReturnError(fmt.Errorf("This is an error"))
 
@@ -68,7 +67,7 @@ func TestUserGetByIDDoesNotExist(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	u := getMockUser(s)
 
-	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user").
+	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId FROM user").
 		WithArgs(id.String()).
 		WillReturnRows(getUserMockRows())
 
@@ -86,9 +85,9 @@ func TestUserGetByEmail(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	u := getMockUser(s)
 
-	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user").
+	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId FROM user").
 		WithArgs("Email").
-		WillReturnRows(getUserMockRows().AddRow(id.String(), "", "FirstName", "LastName", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", nil, "0"))
+		WillReturnRows(getUserMockRows().AddRow(id.String(), "", "FirstName", "LastName", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", nil))
 
 	user, err := u.GetByEmail("Email")
 
@@ -107,7 +106,6 @@ func TestUserGetByEmail(t *testing.T) {
 	assert.Equal(user.AddressZip, "AddressZip")
 	assert.Equal(user.AddressCountry, "AddressCountry")
 	assert.Equal(user.RoasterId, uuid.UUID(nil))
-	assert.Equal(user.IsRoaster, 0)
 }
 
 func TestUserGetByEmailError(t *testing.T) {
@@ -116,7 +114,7 @@ func TestUserGetByEmailError(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	u := getMockUser(s)
 
-	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user").
+	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId FROM user").
 		WithArgs("Email").
 		WillReturnError(fmt.Errorf("This is an error"))
 
@@ -133,11 +131,11 @@ func TestUserGetAll(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	u := getMockUser(s)
 
-	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user").
+	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId FROM user").
 		WithArgs(offset, limit).
 		WillReturnRows(getUserMockRows().
-			AddRow(uuid.New(), "PassHash", "FirstName", "LastName", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", nil, "0").
-			AddRow(uuid.New(), "PassHash", "FirstName", "LastName", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", nil, "0"))
+			AddRow(uuid.New(), "PassHash", "FirstName", "LastName", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", nil).
+			AddRow(uuid.New(), "PassHash", "FirstName", "LastName", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", nil))
 
 	users, err := u.GetAll(offset, limit)
 
@@ -153,7 +151,7 @@ func TestUserGetAllError(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	u := getMockUser(s)
 
-	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, isRoaster FROM user").
+	mock.ExpectQuery("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId FROM user").
 		WithArgs(offset, limit).
 		WillReturnError(fmt.Errorf("This is an error"))
 
@@ -172,7 +170,7 @@ func TestUserInsert(t *testing.T) {
 
 	mock.ExpectPrepare("INSERT INTO user").
 		ExpectExec().
-		WithArgs(user.ID.String(), user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.IsRoaster).
+		WithArgs(user.ID.String(), user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	err := u.Insert(user)
@@ -190,7 +188,7 @@ func TestUserInsertError(t *testing.T) {
 
 	mock.ExpectPrepare("INSERT INTO user").
 		ExpectExec().
-		WithArgs(user.ID.String(), user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.IsRoaster).
+		WithArgs(user.ID.String(), user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String()).
 		WillReturnError(fmt.Errorf("This is an error"))
 
 	err := u.Insert(user)
@@ -208,7 +206,7 @@ func TestUpdate(t *testing.T) {
 
 	mock.ExpectPrepare("UPDATE user").
 		ExpectExec().
-		WithArgs(user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.IsRoaster, user.ID.String()).
+		WithArgs(user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.ID.String()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	err := u.Update(user, user.ID.String())
@@ -226,7 +224,7 @@ func TestUpdateError(t *testing.T) {
 
 	mock.ExpectPrepare("UPDATE user").
 		ExpectExec().
-		WithArgs(user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.IsRoaster, user.ID.String()).
+		WithArgs(user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.ID.String()).
 		WillReturnError(fmt.Errorf("This is an error"))
 
 	err := u.Update(user, user.ID.String())
@@ -276,7 +274,7 @@ func getDefaultUser() *models.User {
 }
 
 func getUserMockRows() sqlmock.Rows {
-	return sqlmock.NewRows([]string{"id", "passHash", "firstName", "lastName", "email", "phone", "addressLine1", "addressLine2", "addressCity", "addressState", "addressZip", "addressCountry", "roasterId", "isRoaster"})
+	return sqlmock.NewRows([]string{"id", "passHash", "firstName", "lastName", "email", "phone", "addressLine1", "addressLine2", "addressCity", "addressState", "addressZip", "addressCountry", "roasterId"})
 }
 
 func getMockUser(s *sql.DB) *User {

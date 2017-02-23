@@ -7,6 +7,8 @@ import (
 	"github.com/ghmeier/bloodlines/handlers"
 	"github.com/jakelong95/TownCenter/helpers"
 	"github.com/jakelong95/TownCenter/models"
+
+	"github.com/pborman/uuid"
 )
 
 type RoasterI interface {
@@ -20,7 +22,13 @@ type RoasterI interface {
 
 type Roaster struct {
 	*handlers.BaseHandler
-	Helper helpers.RoasterI
+	Helper     helpers.RoasterI
+	UserHelper helpers.UserI
+}
+
+type RoasterInfo struct {
+	Roaster models.Roaster `json:"roaster"`
+	UserID  uuid.UUID			 `json:"userId"`
 }
 
 func NewRoaster(ctx *handlers.GatewayContext) RoasterI {
@@ -28,12 +36,13 @@ func NewRoaster(ctx *handlers.GatewayContext) RoasterI {
 	return &Roaster{
 		BaseHandler: &handlers.BaseHandler{Stats: stats},
 		Helper:      helpers.NewRoaster(ctx.Sql),
+		UserHelper:  helpers.NewUser(ctx.Sql),
 	}
 }
 
 func (r *Roaster) New(ctx *gin.Context) {
 	//Bind the json to a roaster object
-	var json models.Roaster
+	var json RoasterInfo
 	err := ctx.BindJSON(&json)
 	if err != nil {
 		r.UserError(ctx, "Error: Unable to parse json", err)
@@ -41,11 +50,31 @@ func (r *Roaster) New(ctx *gin.Context) {
 	}
 
 	//Create the new roaster in the database
-	roaster := models.NewRoaster(json.Name, json.Email, json.Phone, json.AddressLine1, json.AddressLine2, json.AddressCity, json.AddressState, json.AddressZip, json.AddressCountry)
+	roaster := models.NewRoaster(json.Roaster.Name, json.Roaster.Email, json.Roaster.Phone, json.Roaster.AddressLine1, json.Roaster.AddressLine2, json.Roaster.AddressCity, json.Roaster.AddressState, json.Roaster.AddressZip, json.Roaster.AddressCountry)
 	err = r.Helper.Insert(roaster)
 	if err != nil {
 		r.ServerError(ctx, err, json)
 		return
+	}
+
+	//Update the user with their roaster ID
+	user, err := r.UserHelper.GetByID(json.UserID.String())
+
+	if err != nil {
+		r.ServerError(ctx, err, json)
+		return
+	}
+
+	if user == nil {
+		r.NotFoundError(ctx, "Error: User with ID " + json.UserID.String() + " does not exist")
+		return
+	}
+
+	user.RoasterId = roaster.ID
+	err = r.UserHelper.Update(user, json.UserID.String())
+
+	if err != nil {
+		r.ServerError(ctx, err, json.UserID)
 	}
 
 	r.Success(ctx, roaster)
