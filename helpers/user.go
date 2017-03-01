@@ -3,6 +3,8 @@ package helpers
 import (
 	"gopkg.in/alexcesaro/statsd.v2"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/ghmeier/bloodlines/gateways"
 	"github.com/jakelong95/TownCenter/models"
 )
@@ -85,8 +87,7 @@ func (u *User) Insert(user *models.User) error {
 
 func (u *User) Update(user *models.User, id string) error {
 	err := u.sql.Modify(
-		"UPDATE user SET passHash=?, firstName=?, lastName=?, email=?, phone=?, addressLine1=?, addressLine2=?, addressCity=?, addressState=?, addressZip=?, addressCountry=?, roasterId=? WHERE id=?",
-		user.PassHash,
+		"UPDATE user SET firstName=?, lastName=?, email=?, phone=?, addressLine1=?, addressLine2=?, addressCity=?, addressState=?, addressZip=?, addressCountry=?, roasterId=? WHERE id=?",
 		user.FirstName,
 		user.LastName,
 		user.Email,
@@ -100,6 +101,19 @@ func (u *User) Update(user *models.User, id string) error {
 		user.RoasterId,
 		id,
 	)
+
+	if err != nil {
+		return nil
+	}
+
+	if user.PassHash != "" {
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.PassHash), bcrypt.DefaultCost)
+		err = u.sql.Modify(
+			"UPDATE user SET passHash=? WHERE id=?",
+			hashedPassword,
+			id,
+		)
+	}
 
 	return err
 }
