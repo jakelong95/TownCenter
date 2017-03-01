@@ -36,9 +36,15 @@ func New(config *config.Root) (*TownCenter, error) {
 		fmt.Println(err.Error())
 	}
 
+	bloodlines := gateways.NewBloodlines(config.Bloodlines)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
 	ctx := &h.GatewayContext{
-		Sql:   sql,
-		Stats: stats,
+		Sql:   		  sql,
+		Stats: 		  stats,
+		Bloodlines: bloodlines,
 	}
 
 	tc := &TownCenter{

@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/ghmeier/bloodlines/handlers"
+	"github.com/ghmeier/bloodlines/gateways"
 	"github.com/jakelong95/TownCenter/helpers"
 	"github.com/jakelong95/TownCenter/models"
 )
@@ -23,7 +24,8 @@ type UserI interface {
 
 type User struct {
 	*handlers.BaseHandler
-	Helper helpers.UserI
+	Helper     helpers.UserI
+	Bloodlines gateways.Bloodlines
 }
 
 func NewUser(ctx *handlers.GatewayContext) UserI {
@@ -31,6 +33,7 @@ func NewUser(ctx *handlers.GatewayContext) UserI {
 	return &User{
 		BaseHandler: &handlers.BaseHandler{Stats: stats},
 		Helper:      helpers.NewUser(ctx.Sql),
+		Bloodlines:  ctx.Bloodlines,
 	}
 }
 
@@ -60,6 +63,8 @@ func (u *User) New(ctx *gin.Context) {
 
 	//Don't need to pass the password hash back
 	user.PassHash = ""
+
+	u.Bloodlines.NewPreference(user.ID)
 
 	u.Success(ctx, user)
 }
