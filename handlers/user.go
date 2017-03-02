@@ -120,6 +120,11 @@ func (u *User) Update(ctx *gin.Context) {
 		return
 	}
 
+	if json.PassHash != "" {
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(json.PassHash), bcrypt.DefaultCost)
+		json.PassHash = string(hashedPassword)
+	}
+
 	//Update the user in the database
 	err = u.Helper.Update(&json, userId)
 	if err != nil {
