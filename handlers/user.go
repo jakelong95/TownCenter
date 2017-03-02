@@ -63,9 +63,7 @@ func (u *User) New(ctx *gin.Context) {
 
 	//Don't need to pass the password hash back
 	user.PassHash = ""
-
-	u.Bloodlines.NewPreference(user.ID)
-
+	
 	u.Success(ctx, user)
 }
 
