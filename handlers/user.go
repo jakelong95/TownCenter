@@ -63,7 +63,13 @@ func (u *User) New(ctx *gin.Context) {
 
 	//Don't need to pass the password hash back
 	user.PassHash = ""
-	
+
+	_, err  = u.Bloodlines.NewPreference(user.ID)
+	if err != nil {
+		u.ServerError(ctx, err, json)
+		return
+	}
+
 	u.Success(ctx, user)
 }
 
