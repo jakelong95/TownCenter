@@ -19,23 +19,23 @@
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/config",
-			"Rev": "7b63247a39b9310d9a2a549db5d2c6466209c556"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/gateways",
-			"Rev": "7b63247a39b9310d9a2a549db5d2c6466209c556"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/handlers",
-			"Rev": "7b63247a39b9310d9a2a549db5d2c6466209c556"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/helpers",
-			"Rev": "7b63247a39b9310d9a2a549db5d2c6466209c556"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/models",
-			"Rev": "7b63247a39b9310d9a2a549db5d2c6466209c556"
+			"Rev": "10757055f08b983670628de513c0d95813cb1df7"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/gateways",
