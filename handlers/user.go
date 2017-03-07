@@ -20,6 +20,7 @@ type UserI interface {
 	Delete(ctx *gin.Context)
 	Login(ctx *gin.Context)
 	Time() gin.HandlerFunc
+	GetJWT() gin.HandlerFunc
 }
 
 type User struct {
