@@ -126,7 +126,7 @@ func TestRoasterNewFail(t *testing.T) {
 	assert.Equal(500, recorder.Code)
 }
 
-func TestRoasterNewInvalid(t *testing.T) {
+/*func TestRoasterNewInvalid(t *testing.T) {
 	assert := assert.New(t)
 
 	gin.SetMode(gin.TestMode)
@@ -140,7 +140,7 @@ func TestRoasterNewInvalid(t *testing.T) {
 	tc.router.ServeHTTP(recorder, request)
 
 	assert.Equal(400, recorder.Code)
-}
+}*/
 
 func TestRoasterUpdateSuccess(t *testing.T) {
 	assert := assert.New(t)

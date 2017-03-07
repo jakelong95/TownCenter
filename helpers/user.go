@@ -101,7 +101,7 @@ func (u *User) Update(user *models.User, id string) error {
 	)
 
 	if err != nil {
-		return nil
+		return err
 	}
 
 	if user.PassHash != "" {
