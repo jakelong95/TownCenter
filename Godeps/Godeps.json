@@ -6,6 +6,11 @@
 	],
 	"Deps": [
 		{
+			"ImportPath": "github.com/dgrijalva/jwt-go",
+			"Comment": "v3.0.0-17-g2268707",
+			"Rev": "2268707a8f0843315e2004ee4f1d021dc08baedf"
+		},
+		{
 			"ImportPath": "github.com/DATA-DOG/go-sqlmock",
 			"Comment": "v1.1.4-14-g947ce30",
 			"Rev": "947ce303a7986ba00a8c29f5835c5c58f649f856"
