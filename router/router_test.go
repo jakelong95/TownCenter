@@ -6,9 +6,12 @@ import (
 	mockg "github.com/ghmeier/bloodlines/_mocks/gateways"
 	"github.com/ghmeier/bloodlines/config"
 	h "github.com/ghmeier/bloodlines/handlers"
+	m "github.com/ghmeier/bloodlines/models"
 	"github.com/jakelong95/TownCenter/handlers"
 	mocks "github.com/jakelong95/TownCenter/_mocks"
+	"github.com/jakelong95/TownCenter/models"
 
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/alexcesaro/statsd.v2"
 )
@@ -38,18 +41,36 @@ func getMockTownCenter() *TownCenter {
 
 func mockUser() (*TownCenter, *mocks.UserI) {
 	t := getMockTownCenter()
-	mock := new(mocks.UserI)
-	t.user = &handlers.User{Helper: mock, BaseHandler: &h.BaseHandler{Stats: nil}}
+	userMock := new(mocks.UserI)
+	
+	bloodlines := new(mockg.Bloodlines)
+	bloodlines.On("NewPreference", mock.AnythingOfType("uuid.UUID")).Return(&m.Preference{}, nil)
+
+
+	t.user = &handlers.User{
+		Helper: userMock, 
+		BaseHandler: &h.BaseHandler{Stats: nil}, 
+		Bloodlines: bloodlines,
+	}
+	
 	InitRouter(t)
 
-	return t, mock
+	return t, userMock
 }
 
 func mockRoaster() (*TownCenter, *mocks.RoasterI) {
 	t := getMockTownCenter()
-	mock := new(mocks.RoasterI)
-	t.roaster = &handlers.Roaster{Helper: mock, BaseHandler: &h.BaseHandler{Stats: nil}}
+	roasterMock := new(mocks.RoasterI)
+	userHelper := new(mocks.UserI)
+	userHelper.On("GetByID", mock.AnythingOfType("string")).Return(&models.User{}, nil)
+	userHelper.On("Update", mock.AnythingOfType("*models.User"), mock.AnythingOfType("string")).Return(nil)
+
+	t.roaster = &handlers.Roaster{
+		Helper: roasterMock, 
+		BaseHandler: &h.BaseHandler{Stats: nil},
+		UserHelper: userHelper,
+	}
 	InitRouter(t)
 
-	return t, mock
+	return t, roasterMock
 }

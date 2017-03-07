@@ -197,7 +197,7 @@ func TestUserInsertError(t *testing.T) {
 	assert.Error(err)
 }
 
-func TestUpdate(t *testing.T) {
+func TestUpdateWithPassword(t *testing.T) {
 	assert := assert.New(t)
 
 	user := getDefaultUser()
@@ -206,7 +206,11 @@ func TestUpdate(t *testing.T) {
 
 	mock.ExpectPrepare("UPDATE user").
 		ExpectExec().
-		WithArgs(user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.ID.String()).
+		WithArgs(user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.ID.String()).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	mock.ExpectPrepare("UPDATE user").
+		ExpectExec().WithArgs(user.PassHash, user.ID.String()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	err := u.Update(user, user.ID.String())
@@ -215,7 +219,26 @@ func TestUpdate(t *testing.T) {
 	assert.NoError(err)
 }
 
-func TestUpdateError(t *testing.T) {
+func TestUpdateWithoutPassword(t *testing.T) {
+	assert := assert.New(t)
+
+	user := getDefaultUser()
+	user.PassHash = ""
+	s, mock, _ := sqlmock.New()
+	u := getMockUser(s)
+
+	mock.ExpectPrepare("UPDATE user").
+		ExpectExec().
+		WithArgs(user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.ID.String()).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	err := u.Update(user, user.ID.String())
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.NoError(err)
+}
+
+func TestUpdateErrorWithPassword(t *testing.T) {
 	assert := assert.New(t)
 
 	user := getDefaultUser()
@@ -224,7 +247,30 @@ func TestUpdateError(t *testing.T) {
 
 	mock.ExpectPrepare("UPDATE user").
 		ExpectExec().
-		WithArgs(user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.ID.String()).
+		WithArgs(user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.ID.String()).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	mock.ExpectPrepare("UPDATE user").
+		ExpectExec().WithArgs(user.PassHash, user.ID.String()).
+		WillReturnError(fmt.Errorf("This is another error"))
+
+	err := u.Update(user, user.ID.String())
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.Error(err)
+}
+
+func TestUpdateErrorNoPassword(t *testing.T) {
+	assert := assert.New(t)
+
+	user := getDefaultUser()
+	user.PassHash = ""
+	s, mock, _ := sqlmock.New()
+	u := getMockUser(s)
+
+	mock.ExpectPrepare("UPDATE user").
+		ExpectExec().
+		WithArgs(user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.RoasterId.String(), user.ID.String()).
 		WillReturnError(fmt.Errorf("This is an error"))
 
 	err := u.Update(user, user.ID.String())
