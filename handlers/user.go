@@ -1,9 +1,14 @@
 package handlers
 
 import (
+	"os"
+	"time"
+
 	"gopkg.in/alexcesaro/statsd.v2"
 	"gopkg.in/gin-gonic/gin.v1"
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/dgrijalva/jwt-go"
 
 	"github.com/ghmeier/bloodlines/handlers"
 	"github.com/ghmeier/bloodlines/gateways"
@@ -19,6 +24,7 @@ type UserI interface {
 	Delete(ctx *gin.Context)
 	Login(ctx *gin.Context)
 	Time() gin.HandlerFunc
+	GetJWT() gin.HandlerFunc
 }
 
 type User struct {
@@ -69,6 +75,9 @@ func (u *User) New(ctx *gin.Context) {
 		return
 	}
 
+	signedToken, _ := CreateJWT()
+
+	ctx.Header("Auth", signedToken)
 	u.Success(ctx, user)
 }
 
@@ -186,8 +195,21 @@ func (u *User) Login(ctx *gin.Context) {
 	err = bcrypt.CompareHashAndPassword([]byte(tmpHash), []byte(json.PassHash))
 
 	if err == nil {
+		signedToken, _ := CreateJWT()
+
+		ctx.Header("Auth", signedToken)
 		u.Success(ctx, user)
 	} else {
 		u.UserError(ctx, "Incorrect login credentials", nil)
 	}
+}
+
+/*CreateJWT creates a new JSON Web Token that expires in 30 days*/
+func CreateJWT() (string, error) {
+	claims := &jwt.StandardClaims{
+		ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(os.Getenv("JWT")))
 }
