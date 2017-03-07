@@ -4,14 +4,14 @@ import (
 	"os"
 	"time"
 
+	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/alexcesaro/statsd.v2"
 	"gopkg.in/gin-gonic/gin.v1"
-	"golang.org/x/crypto/bcrypt"
 
 	"github.com/dgrijalva/jwt-go"
 
-	"github.com/ghmeier/bloodlines/handlers"
 	"github.com/ghmeier/bloodlines/gateways"
+	"github.com/ghmeier/bloodlines/handlers"
 	"github.com/jakelong95/TownCenter/helpers"
 	"github.com/jakelong95/TownCenter/models"
 )
@@ -69,7 +69,7 @@ func (u *User) New(ctx *gin.Context) {
 	//Don't need to pass the password hash back
 	user.PassHash = ""
 
-	_, err  = u.Bloodlines.NewPreference(user.ID)
+	_, err = u.Bloodlines.NewPreference(user.ID)
 	if err != nil {
 		u.ServerError(ctx, err, json)
 		return
@@ -111,7 +111,7 @@ func (u *User) View(ctx *gin.Context) {
 	}
 
 	if user == nil {
-		u.NotFoundError(ctx, "Error: User with ID " + userId + " does not exist")
+		u.NotFoundError(ctx, "Error: User with ID "+userId+" does not exist")
 		return
 	}
 
@@ -180,7 +180,7 @@ func (u *User) Login(ctx *gin.Context) {
 	}
 
 	if user == nil {
-		u.NotFoundError(ctx, "Error: User with email " + json.Email + " not found")
+		u.NotFoundError(ctx, "Error: User with email "+json.Email+" not found")
 		return
 	}
 
@@ -197,7 +197,7 @@ func (u *User) Login(ctx *gin.Context) {
 	if err == nil {
 		signedToken, _ := CreateJWT()
 
-		ctx.Header("Auth", signedToken)
+		ctx.Header("X-Auth", signedToken)
 		u.Success(ctx, user)
 	} else {
 		u.UserError(ctx, "Incorrect login credentials", nil)
