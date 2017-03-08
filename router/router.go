@@ -36,15 +36,18 @@ func New(config *config.Root) (*TownCenter, error) {
 		fmt.Println(err.Error())
 	}
 
+	s3 := gateways.NewS3(config.S3)
+
 	bloodlines := gateways.NewBloodlines(config.Bloodlines)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
 	ctx := &h.GatewayContext{
-		Sql:   		  sql,
-		Stats: 		  stats,
+		Sql:        sql,
+		Stats:      stats,
 		Bloodlines: bloodlines,
+		S3:         s3,
 	}
 
 	tc := &TownCenter{
@@ -71,6 +74,7 @@ func InitRouter(tc *TownCenter) {
 		user.PUT("/:userId", tc.user.Update)
 		user.DELETE("/:userId", tc.user.Delete)
 		user.GET("/:userId", tc.user.View)
+		user.POST("/photo/:userId", tc.user.Upload)
 	}
 
 	roaster := tc.router.Group("/api/roaster")

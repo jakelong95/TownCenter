@@ -23,6 +23,7 @@ type UserI interface {
 	Update(ctx *gin.Context)
 	Delete(ctx *gin.Context)
 	Login(ctx *gin.Context)
+	Upload(ctx *gin.Context)
 	Time() gin.HandlerFunc
 	GetJWT() gin.HandlerFunc
 }
@@ -37,7 +38,7 @@ func NewUser(ctx *handlers.GatewayContext) UserI {
 	stats := ctx.Stats.Clone(statsd.Prefix("api.user"))
 	return &User{
 		BaseHandler: &handlers.BaseHandler{Stats: stats},
-		Helper:      helpers.NewUser(ctx.Sql),
+		Helper:      helpers.NewUser(ctx.Sql, ctx.S3),
 		Bloodlines:  ctx.Bloodlines,
 	}
 }
@@ -202,6 +203,23 @@ func (u *User) Login(ctx *gin.Context) {
 	} else {
 		u.UserError(ctx, "Incorrect login credentials", nil)
 	}
+}
+
+func (u *User) Upload(ctx *gin.Context) {
+	id := ctx.Param("userId")
+	file, headers, err := ctx.Request.FormFile("profile")
+	if err != nil {
+		u.UserError(ctx, "ERROR: unable to find body", nil)
+	}
+	defer file.Close()
+
+	err = u.Helper.Profile(id, headers.Filename, file)
+	if err != nil {
+		u.ServerError(ctx, err, id)
+		return
+	}
+
+	u.Success(ctx, nil)
 }
 
 /*CreateJWT creates a new JSON Web Token that expires in 30 days*/
