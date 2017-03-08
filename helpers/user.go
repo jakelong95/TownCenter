@@ -150,7 +150,6 @@ func (u *User) GetByEmail(email string) (*models.User, error) {
 
 func (u *User) Profile(id string, name string, body multipart.File) error {
 	filename := fmt.Sprintf("%s-%s", id, name)
-	fmt.Println(filename)
 	url, err := u.S3.Upload("profile", filename, body)
 	if err != nil {
 		return err
