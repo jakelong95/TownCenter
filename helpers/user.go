@@ -151,6 +151,11 @@ func (u *User) GetByEmail(email string) (*models.User, error) {
 func (u *User) Profile(id string, name string, body multipart.File) error {
 	filename := fmt.Sprintf("%s-%s", id, name)
 	fmt.Println(filename)
-	_, err := u.S3.Upload("profile", filename, body)
+	url, err := u.S3.Upload("profile", filename, body)
+	if err != nil {
+		return err
+	}
+
+	err = u.sql.Modify("UPDATE user SET profileUrl=? WHERE id=?", url, id)
 	return err
 }
