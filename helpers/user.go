@@ -38,7 +38,7 @@ func NewUser(sql gateways.SQL, s3 gateways.S3) *User {
 }
 
 func (u *User) GetByID(id string) (*models.User, error) {
-	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId FROM user WHERE id=?", id)
+	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, profileUrl FROM user WHERE id=?", id)
 
 	if err != nil {
 		return nil, err
@@ -57,7 +57,7 @@ func (u *User) GetByID(id string) (*models.User, error) {
 }
 
 func (u *User) GetAll(offset int, limit int) ([]*models.User, error) {
-	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId FROM user ORDER BY id ASC LIMIT ?,?", offset, limit)
+	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, profileUrl FROM user ORDER BY id ASC LIMIT ?,?", offset, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (u *User) GetAll(offset int, limit int) ([]*models.User, error) {
 
 func (u *User) Insert(user *models.User) error {
 	err := u.sql.Modify(
-		"INSERT INTO user (id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+		"INSERT INTO user (id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, profileUrl) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?)",
 		user.ID,
 		user.PassHash,
 		user.FirstName,
@@ -86,6 +86,7 @@ func (u *User) Insert(user *models.User) error {
 		user.AddressZip,
 		user.AddressCountry,
 		user.RoasterId,
+		user.ProfileURL,
 	)
 
 	return err
@@ -93,7 +94,7 @@ func (u *User) Insert(user *models.User) error {
 
 func (u *User) Update(user *models.User, id string) error {
 	err := u.sql.Modify(
-		"UPDATE user SET firstName=?, lastName=?, email=?, phone=?, addressLine1=?, addressLine2=?, addressCity=?, addressState=?, addressZip=?, addressCountry=?, roasterId=? WHERE id=?",
+		"UPDATE user SET firstName=?, lastName=?, email=?, phone=?, addressLine1=?, addressLine2=?, addressCity=?, addressState=?, addressZip=?, addressCountry=?, roasterId=?, profileUrl=? WHERE id=?",
 		user.FirstName,
 		user.LastName,
 		user.Email,
@@ -105,6 +106,7 @@ func (u *User) Update(user *models.User, id string) error {
 		user.AddressZip,
 		user.AddressCountry,
 		user.RoasterId,
+		user.ProfileURL,
 		id,
 	)
 
@@ -129,7 +131,7 @@ func (u *User) Delete(id string) error {
 }
 
 func (u *User) GetByEmail(email string) (*models.User, error) {
-	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId FROM user WHERE email=?", email)
+	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, profileUrl FROM user WHERE email=?", email)
 	if err != nil {
 		return nil, err
 	}
