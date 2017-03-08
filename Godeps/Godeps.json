@@ -11,33 +11,68 @@
 			"Rev": "947ce303a7986ba00a8c29f5835c5c58f649f856"
 		},
 		{
+			"ImportPath": "github.com/aws/aws-sdk-go/aws",
+			"Comment": "v1.7.4-1-g0700d99",
+			"Rev": "0700d99edb91ab11ba748f096cbdcf424e53446b"
+		},
+		{
+			"ImportPath": "github.com/aws/aws-sdk-go/private/protocol",
+			"Comment": "v1.7.4-1-g0700d99",
+			"Rev": "0700d99edb91ab11ba748f096cbdcf424e53446b"
+		},
+		{
+			"ImportPath": "github.com/aws/aws-sdk-go/private/waiter",
+			"Comment": "v1.7.4-1-g0700d99",
+			"Rev": "0700d99edb91ab11ba748f096cbdcf424e53446b"
+		},
+		{
+			"ImportPath": "github.com/aws/aws-sdk-go/service/s3",
+			"Comment": "v1.7.4-1-g0700d99",
+			"Rev": "0700d99edb91ab11ba748f096cbdcf424e53446b"
+		},
+		{
+			"ImportPath": "github.com/aws/aws-sdk-go/service/sts",
+			"Comment": "v1.7.4-1-g0700d99",
+			"Rev": "0700d99edb91ab11ba748f096cbdcf424e53446b"
+		},
+		{
+			"ImportPath": "github.com/aws/aws-sdk-go/vendor/github.com/go-ini/ini",
+			"Comment": "v1.7.4-1-g0700d99",
+			"Rev": "0700d99edb91ab11ba748f096cbdcf424e53446b"
+		},
+		{
+			"ImportPath": "github.com/aws/aws-sdk-go/vendor/github.com/jmespath/go-jmespath",
+			"Comment": "v1.7.4-1-g0700d99",
+			"Rev": "0700d99edb91ab11ba748f096cbdcf424e53446b"
+		},
+		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",
 			"Comment": "v3.0.0-17-g2268707",
 			"Rev": "2268707a8f0843315e2004ee4f1d021dc08baedf"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/_mocks/gateways",
-			"Rev": "a8edb5750f67413d217b892a52d5a6c868e916dd"
+			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/config",
-			"Rev": "a8edb5750f67413d217b892a52d5a6c868e916dd"
+			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/gateways",
-			"Rev": "a8edb5750f67413d217b892a52d5a6c868e916dd"
+			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/handlers",
-			"Rev": "a8edb5750f67413d217b892a52d5a6c868e916dd"
+			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/helpers",
-			"Rev": "a8edb5750f67413d217b892a52d5a6c868e916dd"
+			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/models",
-			"Rev": "a8edb5750f67413d217b892a52d5a6c868e916dd"
+			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/gateways",
@@ -68,11 +103,11 @@
 		},
 		{
 			"ImportPath": "github.com/lcollin/warehouse/gateways",
-			"Rev": "d5facea4f95303a2a0a004d3e211b348a03f51ac"
+			"Rev": "9a59689fdb34d23682ab17ceaa968ec16d57e3d8"
 		},
 		{
 			"ImportPath": "github.com/lcollin/warehouse/models",
-			"Rev": "d5facea4f95303a2a0a004d3e211b348a03f51ac"
+			"Rev": "9a59689fdb34d23682ab17ceaa968ec16d57e3d8"
 		},
 		{
 			"ImportPath": "github.com/manucorporat/sse",
