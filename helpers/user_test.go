@@ -3,8 +3,10 @@ package helpers
 import (
 	"database/sql"
 	"fmt"
+	"os"
 	"testing"
 
+	mocks "github.com/ghmeier/bloodlines/_mocks/gateways"
 	"github.com/ghmeier/bloodlines/gateways"
 	"github.com/jakelong95/TownCenter/models"
 
@@ -312,6 +314,48 @@ func TestDeleteUserError(t *testing.T) {
 		WillReturnError(fmt.Errorf("This is an error"))
 
 	err := u.Delete(id.String())
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.Error(err)
+}
+
+func TestUserProfile(t *testing.T) {
+	assert := assert.New(t)
+
+	id := uuid.NewUUID()
+	s, mock, _ := sqlmock.New()
+	u := getMockUser(s)
+	sMock := &mocks.S3{}
+	u.S3 = sMock
+	file := &os.File{}
+
+	sMock.On("Upload", "profile", fmt.Sprintf("%s-%s", id.String(), "test"), file).
+		Return("test.com", nil)
+	mock.ExpectPrepare("UPDATE user SET").
+		ExpectExec().
+		WithArgs("test.com", id.String()).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	err := u.Profile(id.String(), "test", file)
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.NoError(err)
+}
+
+func TestUserProfileError(t *testing.T) {
+	assert := assert.New(t)
+
+	id := uuid.NewUUID()
+	s, mock, _ := sqlmock.New()
+	u := getMockUser(s)
+	sMock := &mocks.S3{}
+	u.S3 = sMock
+	file := &os.File{}
+
+	sMock.On("Upload", "profile", fmt.Sprintf("%s-%s", id.String(), "test"), file).
+		Return("", fmt.Errorf("some error"))
+
+	err := u.Profile(id.String(), "test", file)
 
 	assert.Equal(mock.ExpectationsWereMet(), nil)
 	assert.Error(err)

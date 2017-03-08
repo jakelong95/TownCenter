@@ -52,27 +52,27 @@
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/_mocks/gateways",
-			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
+			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/config",
-			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
+			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/gateways",
-			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
+			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/handlers",
-			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
+			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/helpers",
-			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
+			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/models",
-			"Rev": "8a6238932291f480b08ddc689de934d96bae5be8"
+			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/gateways",
