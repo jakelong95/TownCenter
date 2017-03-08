@@ -1,6 +1,9 @@
 package helpers
 
 import (
+	"fmt"
+	"mime/multipart"
+
 	"gopkg.in/alexcesaro/statsd.v2"
 
 	"github.com/ghmeier/bloodlines/gateways"
@@ -19,14 +22,19 @@ type UserI interface {
 	Update(*models.User, string) error
 	Delete(string) error
 	GetByEmail(string) (*models.User, error)
+	Profile(string, string, multipart.File) error
 }
 
 type User struct {
 	*baseHelper
+	S3 gateways.S3
 }
 
-func NewUser(sql gateways.SQL) *User {
-	return &User{baseHelper: &baseHelper{sql: sql}}
+func NewUser(sql gateways.SQL, s3 gateways.S3) *User {
+	return &User{
+		baseHelper: &baseHelper{sql: sql},
+		S3:         s3,
+	}
 }
 
 func (u *User) GetByID(id string) (*models.User, error) {
@@ -41,7 +49,7 @@ func (u *User) GetByID(id string) (*models.User, error) {
 		return nil, err
 	}
 
-	if(len(users) == 0) {
+	if len(users) == 0 {
 		return nil, nil
 	}
 
@@ -131,9 +139,16 @@ func (u *User) GetByEmail(email string) (*models.User, error) {
 		return nil, err
 	}
 
-	if(len(users) == 0) {
+	if len(users) == 0 {
 		return nil, nil
 	}
 
 	return users[0], err
+}
+
+func (u *User) Profile(id string, name string, body multipart.File) error {
+	filename := fmt.Sprintf("%s-%s", id, name)
+	fmt.Println(filename)
+	_, err := u.S3.Upload("profile", filename, body)
+	return err
 }

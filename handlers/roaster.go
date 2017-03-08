@@ -29,7 +29,7 @@ type Roaster struct {
 
 type RoasterInfo struct {
 	Roaster models.Roaster `json:"roaster"`
-	UserID  uuid.UUID			 `json:"userId"`
+	UserID  uuid.UUID      `json:"userId"`
 }
 
 func NewRoaster(ctx *handlers.GatewayContext) RoasterI {
@@ -37,7 +37,7 @@ func NewRoaster(ctx *handlers.GatewayContext) RoasterI {
 	return &Roaster{
 		BaseHandler: &handlers.BaseHandler{Stats: stats},
 		Helper:      helpers.NewRoaster(ctx.Sql),
-		UserHelper:  helpers.NewUser(ctx.Sql),
+		UserHelper:  helpers.NewUser(ctx.Sql, ctx.S3),
 	}
 }
 
@@ -67,7 +67,7 @@ func (r *Roaster) New(ctx *gin.Context) {
 	}
 
 	if user == nil {
-		r.NotFoundError(ctx, "Error: User with ID " + json.UserID.String() + " does not exist")
+		r.NotFoundError(ctx, "Error: User with ID "+json.UserID.String()+" does not exist")
 		return
 	}
 
@@ -106,7 +106,7 @@ func (r *Roaster) View(ctx *gin.Context) {
 	}
 
 	if roaster == nil {
-		r.NotFoundError(ctx, "Error: Roaster with ID " + roasterId + " does not exist")
+		r.NotFoundError(ctx, "Error: Roaster with ID "+roasterId+" does not exist")
 		return
 	}
 
