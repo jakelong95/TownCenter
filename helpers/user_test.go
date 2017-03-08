@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/jakelong95/TownCenter/models"
 	"github.com/ghmeier/bloodlines/gateways"
+	"github.com/jakelong95/TownCenter/models"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/pborman/uuid"
@@ -324,5 +324,5 @@ func getUserMockRows() sqlmock.Rows {
 }
 
 func getMockUser(s *sql.DB) *User {
-	return NewUser(&gateways.MySQL{DB: s})
+	return NewUser(&gateways.MySQL{DB: s}, nil)
 }
