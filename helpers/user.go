@@ -72,7 +72,7 @@ func (u *User) GetAll(offset int, limit int) ([]*models.User, error) {
 
 func (u *User) Insert(user *models.User) error {
 	err := u.sql.Modify(
-		"INSERT INTO user (id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, profileUrl) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+		"INSERT INTO user (id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, profileUrl) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 		user.ID,
 		user.PassHash,
 		user.FirstName,
