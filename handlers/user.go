@@ -55,6 +55,7 @@ func (u *User) New(ctx *gin.Context) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(json.PassHash), bcrypt.DefaultCost)
 	if err != nil {
 		u.ServerError(ctx, err, nil)
+		return
 	}
 
 	//Create the new user in the database
