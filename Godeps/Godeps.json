@@ -52,35 +52,35 @@
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/_mocks/gateways",
-			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
+			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/config",
-			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
+			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/gateways",
-			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
+			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/handlers",
-			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
+			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/helpers",
-			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
+			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/models",
-			"Rev": "3c4ddd8afb69460e51cf2ac6c85b9696ddf51697"
+			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/gateways",
-			"Rev": "98cebaabc1ba74bcb2a6a107dfc38002cd24407b"
+			"Rev": "278561152d53087603603195b58155d83ffd005b"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/models",
-			"Rev": "98cebaabc1ba74bcb2a6a107dfc38002cd24407b"
+			"Rev": "278561152d53087603603195b58155d83ffd005b"
 		},
 		{
 			"ImportPath": "github.com/gin-gonic/gin/binding",
@@ -103,11 +103,11 @@
 		},
 		{
 			"ImportPath": "github.com/lcollin/warehouse/gateways",
-			"Rev": "9a59689fdb34d23682ab17ceaa968ec16d57e3d8"
+			"Rev": "7ee4315b9ae207b93f7bcebf390c42a5c6e7f4ea"
 		},
 		{
 			"ImportPath": "github.com/lcollin/warehouse/models",
-			"Rev": "9a59689fdb34d23682ab17ceaa968ec16d57e3d8"
+			"Rev": "7ee4315b9ae207b93f7bcebf390c42a5c6e7f4ea"
 		},
 		{
 			"ImportPath": "github.com/manucorporat/sse",
@@ -164,11 +164,11 @@
 		},
 		{
 			"ImportPath": "github.com/yuderekyu/covenant/gateways",
-			"Rev": "3504bd0f1c20ea42f47ae873318f7e635ad700de"
+			"Rev": "af8ab0058823e48860271eb165c2805815c8c640"
 		},
 		{
 			"ImportPath": "github.com/yuderekyu/covenant/models",
-			"Rev": "3504bd0f1c20ea42f47ae873318f7e635ad700de"
+			"Rev": "af8ab0058823e48860271eb165c2805815c8c640"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/bcrypt",
