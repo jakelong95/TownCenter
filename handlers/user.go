@@ -79,7 +79,7 @@ func (u *User) New(ctx *gin.Context) {
 
 	signedToken, _ := CreateJWT()
 
-	ctx.Header("Auth", signedToken)
+	ctx.Header("X-Auth", signedToken)
 	u.Success(ctx, user)
 }
 

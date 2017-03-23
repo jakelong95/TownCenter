@@ -27,7 +27,7 @@ func TestUserViewSuccess(t *testing.T) {
 	userMock.On("GetByID", id.String()).Return(&models.User{}, nil)
 
 	recorder := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/api/user/" + id.String(), nil)
+	request, _ := http.NewRequest("GET", "/api/user/"+id.String(), nil)
 	tc.router.ServeHTTP(recorder, request)
 
 	assert.Equal(200, recorder.Code)
@@ -43,7 +43,7 @@ func TestUserViewFail(t *testing.T) {
 	userMock.On("GetByID", id.String()).Return(nil, fmt.Errorf("This is an error"))
 
 	recorder := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/api/user/" + id.String(), nil)
+	request, _ := http.NewRequest("GET", "/api/user/"+id.String(), nil)
 	tc.router.ServeHTTP(recorder, request)
 
 	assert.Equal(500, recorder.Code)
@@ -107,6 +107,7 @@ func TestUserNewSuccess(t *testing.T) {
 	request, _ := http.NewRequest("POST", "/api/user", user)
 	tc.router.ServeHTTP(recorder, request)
 
+	assert.NotNil(recorder.Header().Get("X-Auth"))
 	assert.Equal(200, recorder.Code)
 }
 
