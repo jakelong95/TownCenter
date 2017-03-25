@@ -1,15 +1,7 @@
 {
 	"ImportPath": "github.com/jakelong95/TownCenter",
 	"GoVersion": "go1.6.4",
-	"Packages": [
-		"./..."
-	],
 	"Deps": [
-		{
-			"ImportPath": "github.com/DATA-DOG/go-sqlmock",
-			"Comment": "v1.1.4-14-g947ce30",
-			"Rev": "947ce303a7986ba00a8c29f5835c5c58f649f856"
-		},
 		{
 			"ImportPath": "github.com/aws/aws-sdk-go/aws",
 			"Comment": "v1.7.4-1-g0700d99",
@@ -51,36 +43,32 @@
 			"Rev": "2268707a8f0843315e2004ee4f1d021dc08baedf"
 		},
 		{
-			"ImportPath": "github.com/ghmeier/bloodlines/_mocks/gateways",
-			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
-		},
-		{
 			"ImportPath": "github.com/ghmeier/bloodlines/config",
-			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
+			"Rev": "b448efcf09d584165612e8887d75554721292ead"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/gateways",
-			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
+			"Rev": "b448efcf09d584165612e8887d75554721292ead"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/handlers",
-			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
+			"Rev": "b448efcf09d584165612e8887d75554721292ead"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/helpers",
-			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
+			"Rev": "b448efcf09d584165612e8887d75554721292ead"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/models",
-			"Rev": "8765e63d4b04d163ce8f7aba6a1840237163f156"
+			"Rev": "b448efcf09d584165612e8887d75554721292ead"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/gateways",
-			"Rev": "278561152d53087603603195b58155d83ffd005b"
+			"Rev": "d790c2404c7a1f37409265a9df31487c5991cb2c"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/models",
-			"Rev": "278561152d53087603603195b58155d83ffd005b"
+			"Rev": "d790c2404c7a1f37409265a9df31487c5991cb2c"
 		},
 		{
 			"ImportPath": "github.com/gin-gonic/gin/binding",
@@ -103,11 +91,11 @@
 		},
 		{
 			"ImportPath": "github.com/lcollin/warehouse/gateways",
-			"Rev": "7ee4315b9ae207b93f7bcebf390c42a5c6e7f4ea"
+			"Rev": "4ab2ac0a57095533ab49fc1d54b372c9890072e0"
 		},
 		{
 			"ImportPath": "github.com/lcollin/warehouse/models",
-			"Rev": "7ee4315b9ae207b93f7bcebf390c42a5c6e7f4ea"
+			"Rev": "4ab2ac0a57095533ab49fc1d54b372c9890072e0"
 		},
 		{
 			"ImportPath": "github.com/manucorporat/sse",
@@ -133,42 +121,17 @@
 			"Rev": "4da4cfa085c174b489ec35cf1e29ffb147d45298"
 		},
 		{
-			"ImportPath": "github.com/stretchr/testify/assert",
-			"Comment": "v1.1.4-6-g18a02ba",
-			"Rev": "18a02ba4a312f95da08ff4cfc0055750ce50ae9e"
-		},
-		{
-			"ImportPath": "github.com/stretchr/testify/mock",
-			"Comment": "v1.1.4-6-g18a02ba",
-			"Rev": "18a02ba4a312f95da08ff4cfc0055750ce50ae9e"
-		},
-		{
-			"ImportPath": "github.com/stretchr/testify/vendor/github.com/davecgh/go-spew/spew",
-			"Comment": "v1.1.4-6-g18a02ba",
-			"Rev": "18a02ba4a312f95da08ff4cfc0055750ce50ae9e"
-		},
-		{
-			"ImportPath": "github.com/stretchr/testify/vendor/github.com/pmezard/go-difflib/difflib",
-			"Comment": "v1.1.4-6-g18a02ba",
-			"Rev": "18a02ba4a312f95da08ff4cfc0055750ce50ae9e"
-		},
-		{
-			"ImportPath": "github.com/stretchr/testify/vendor/github.com/stretchr/objx",
-			"Comment": "v1.1.4-6-g18a02ba",
-			"Rev": "18a02ba4a312f95da08ff4cfc0055750ce50ae9e"
-		},
-		{
 			"ImportPath": "github.com/stripe/stripe-go",
 			"Comment": "v19.2.0",
 			"Rev": "3f2707ab5115e7c54c70a77aabcb386d6f405810"
 		},
 		{
 			"ImportPath": "github.com/yuderekyu/covenant/gateways",
-			"Rev": "af8ab0058823e48860271eb165c2805815c8c640"
+			"Rev": "e506c7655d30c8183e8ad4947fc38730b35cdca0"
 		},
 		{
 			"ImportPath": "github.com/yuderekyu/covenant/models",
-			"Rev": "af8ab0058823e48860271eb165c2805815c8c640"
+			"Rev": "e506c7655d30c8183e8ad4947fc38730b35cdca0"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/bcrypt",
