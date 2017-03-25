@@ -64,17 +64,23 @@ func InitRouter(tc *TownCenter) {
 	tc.router = gin.Default()
 	tc.router.Use(h.GetCors())
 
+	authenticate := tc.router.Group("/api/auth")
+	{
+		authenticate.Use(tc.user.Time())
+		authenticate.POST("/login", tc.user.Login)
+	}
+
 	user := tc.router.Group("/api/user")
 	{
 		user.Use(tc.user.Time())
 		user.POST("", tc.user.New)
-		user.POST("/login", tc.user.Login)
 		user.Use(tc.user.GetJWT())
-		user.GET("", tc.user.ViewAll)
+		user.GET("", tc.user.ViewByToken)
+		//user.GET("/", tc.user.ViewAll)
 		user.PUT("/:userId", tc.user.Update)
 		user.DELETE("/:userId", tc.user.Delete)
 		user.GET("/:userId", tc.user.View)
-		user.POST("/photo/:userId", tc.user.Upload)
+		user.POST("/:userId/photo", tc.user.Upload)
 	}
 
 	roaster := tc.router.Group("/api/roaster")

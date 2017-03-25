@@ -9,6 +9,7 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/pborman/uuid"
 
 	"github.com/ghmeier/bloodlines/gateways"
 	"github.com/ghmeier/bloodlines/handlers"
@@ -20,6 +21,7 @@ type UserI interface {
 	New(ctx *gin.Context)
 	ViewAll(ctx *gin.Context)
 	View(ctx *gin.Context)
+	ViewByToken(ctx *gin.Context)
 	Update(ctx *gin.Context)
 	Delete(ctx *gin.Context)
 	Login(ctx *gin.Context)
@@ -77,7 +79,7 @@ func (u *User) New(ctx *gin.Context) {
 		return
 	}
 
-	signedToken, _ := CreateJWT()
+	signedToken, _ := CreateJWT(user.ID)
 
 	ctx.Header("X-Auth", signedToken)
 	u.Success(ctx, user)
@@ -103,17 +105,31 @@ func (u *User) ViewAll(ctx *gin.Context) {
 }
 
 func (u *User) View(ctx *gin.Context) {
-	userId := ctx.Param("userId")
+	userID := ctx.Param("userId")
 
+	u.viewByID(ctx, uuid.Parse(userID))
+}
+
+func (u *User) ViewByToken(ctx *gin.Context) {
+	userID := ctx.Request.Header.Get("X-UserId")
+	if userID == "" {
+		u.UserError(ctx, "Error: No userId found", nil)
+		return
+	}
+
+	u.viewByID(ctx, uuid.Parse(userID))
+}
+
+func (u *User) viewByID(ctx *gin.Context, id uuid.UUID) {
 	//Query the database for the user
-	user, err := u.Helper.GetByID(userId)
+	user, err := u.Helper.GetByID(id.String())
 	if err != nil {
-		u.ServerError(ctx, err, userId)
+		u.ServerError(ctx, err, id)
 		return
 	}
 
 	if user == nil {
-		u.NotFoundError(ctx, "Error: User with ID "+userId+" does not exist")
+		u.NotFoundError(ctx, "Error: User with ID "+id.String()+" does not exist")
 		return
 	}
 
@@ -197,7 +213,7 @@ func (u *User) Login(ctx *gin.Context) {
 	err = bcrypt.CompareHashAndPassword([]byte(tmpHash), []byte(json.PassHash))
 
 	if err == nil {
-		signedToken, _ := CreateJWT()
+		signedToken, _ := CreateJWT(user.ID)
 
 		ctx.Header("X-Auth", signedToken)
 		u.Success(ctx, user)
@@ -224,9 +240,12 @@ func (u *User) Upload(ctx *gin.Context) {
 }
 
 /*CreateJWT creates a new JSON Web Token that expires in 30 days*/
-func CreateJWT() (string, error) {
-	claims := &jwt.StandardClaims{
-		ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(),
+func CreateJWT(id uuid.UUID) (string, error) {
+	claims := &handlers.ExpressoClaims{
+		id.String(),
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(),
+		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
