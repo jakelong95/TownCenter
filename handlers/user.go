@@ -54,6 +54,12 @@ func (u *User) New(ctx *gin.Context) {
 		return
 	}
 
+	existing, err := u.Helper.GetByEmail(json.Email)
+	if err != nil || existing != nil {
+		u.UserError(ctx, "Error: user with that email already exists", json)
+		return
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(json.PassHash), bcrypt.DefaultCost)
 	if err != nil {
 		u.ServerError(ctx, err, nil)

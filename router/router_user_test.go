@@ -101,6 +101,7 @@ func TestUserNewSuccess(t *testing.T) {
 
 	tc, userMock := mockUser()
 	userMock.On("Insert", mock.AnythingOfType("*models.User")).Return(nil)
+	userMock.On("GetByEmail", "").Return(nil, nil)
 
 	user := getUserString(models.NewUser("", "", "", "", "", "", "", "", "", "", ""))
 	recorder := httptest.NewRecorder()
@@ -118,6 +119,7 @@ func TestUserNewFail(t *testing.T) {
 
 	tc, userMock := mockUser()
 	userMock.On("Insert", mock.AnythingOfType("*models.User")).Return(fmt.Errorf("This is an error"))
+	userMock.On("GetByEmail", "").Return(nil, nil)
 
 	user := getUserString(models.NewUser("", "", "", "", "", "", "", "", "", "", ""))
 	recorder := httptest.NewRecorder()
@@ -127,6 +129,22 @@ func TestUserNewFail(t *testing.T) {
 	assert.Equal(500, recorder.Code)
 }
 
+func TestUserAlreadyExists(t *testing.T) {
+	assert := assert.New(t)
+
+	gin.SetMode(gin.TestMode)
+
+	tc, userMock := mockUser()
+	userMock.On("GetByEmail", "").Return(models.NewUser("", "", "", "", "", "", "", "", "", "", ""), nil)
+
+	user := getUserString(models.NewUser("", "", "", "", "", "", "", "", "", "", ""))
+	recorder := httptest.NewRecorder()
+	request, _ := http.NewRequest("POST", "/api/user", user)
+	tc.router.ServeHTTP(recorder, request)
+
+	assert.Equal(400, recorder.Code)
+}
+
 func TestUserNewInvalid(t *testing.T) {
 	assert := assert.New(t)
 
@@ -134,6 +152,7 @@ func TestUserNewInvalid(t *testing.T) {
 
 	tc, userMock := mockUser()
 	userMock.On("Insert", mock.AnythingOfType("*models.User")).Return(nil)
+	userMock.On("GetByEmail", "").Return(nil, nil)
 
 	user := bytes.NewReader([]byte("{\"id\": \"INVALID\"}"))
 	recorder := httptest.NewRecorder()
