@@ -17,6 +17,7 @@ type TownCenter struct {
 	router  *gin.Engine
 	user    handlers.UserI
 	roaster handlers.RoasterI
+	reset   handlers.ResetI
 }
 
 /* Creates a ready-to-run TownCenter struct from the given config */
@@ -53,6 +54,7 @@ func New(config *config.Root) (*TownCenter, error) {
 	tc := &TownCenter{
 		user:    handlers.NewUser(ctx),
 		roaster: handlers.NewRoaster(ctx),
+		reset:   handlers.NewReset(ctx),
 	}
 
 	InitRouter(tc)
@@ -92,6 +94,15 @@ func InitRouter(tc *TownCenter) {
 		roaster.PUT("/:roasterId", tc.roaster.Update)
 		roaster.DELETE("/:roasterId", tc.roaster.Delete)
 		roaster.GET("/:roasterId", tc.roaster.View)
+	}
+
+	reset := tc.router.Group("/api/reset")
+	{
+		roaster.Use(tc.roaster.Time())
+		reset.POST("", tc.reset.Request)
+		roaster.Use(tc.roaster.GetJWT())
+		reset.GET("/:token", tc.reset.Get)
+		reset.POST("/:token", tc.reset.Fulfill)
 	}
 }
 
