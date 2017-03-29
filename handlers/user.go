@@ -60,14 +60,8 @@ func (u *User) New(ctx *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(json.PassHash), bcrypt.DefaultCost)
-	if err != nil {
-		u.ServerError(ctx, err, nil)
-		return
-	}
-
 	//Create the new user in the database
-	user := models.NewUser(string(hashedPassword), json.FirstName, json.LastName, json.Email, json.Phone,
+	user := models.NewUser(json.PassHash, json.FirstName, json.LastName, json.Email, json.Phone,
 		json.AddressLine1, json.AddressLine2, json.AddressCity, json.AddressState, json.AddressZip,
 		json.AddressCountry)
 	err = u.Helper.Insert(user)
@@ -154,11 +148,6 @@ func (u *User) Update(ctx *gin.Context) {
 	if err != nil {
 		u.UserError(ctx, "Error: Unable to parse json", err)
 		return
-	}
-
-	if json.PassHash != "" {
-		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(json.PassHash), bcrypt.DefaultCost)
-		json.PassHash = string(hashedPassword)
 	}
 
 	//Update the user in the database

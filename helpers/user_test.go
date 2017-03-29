@@ -174,7 +174,7 @@ func TestUserInsert(t *testing.T) {
 
 	mock.ExpectPrepare("INSERT INTO user").
 		ExpectExec().
-		WithArgs(user.ID.String(), user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.ProfileURL, user.RoasterId.String()).
+		WithArgs(user.ID.String(), sqlmock.AnyArg(), user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.ProfileURL, user.RoasterId.String()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	err := u.Insert(user)
@@ -192,7 +192,7 @@ func TestUserInsertError(t *testing.T) {
 
 	mock.ExpectPrepare("INSERT INTO user").
 		ExpectExec().
-		WithArgs(user.ID.String(), user.PassHash, user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.ProfileURL, user.RoasterId.String()).
+		WithArgs(user.ID.String(), sqlmock.AnyArg(), user.FirstName, user.LastName, user.Email, user.Phone, user.AddressLine1, user.AddressLine2, user.AddressCity, user.AddressState, user.AddressZip, user.AddressCountry, user.ProfileURL, user.RoasterId.String()).
 		WillReturnError(fmt.Errorf("This is an error"))
 
 	err := u.Insert(user)
@@ -214,7 +214,7 @@ func TestUpdateWithPassword(t *testing.T) {
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	mock.ExpectPrepare("UPDATE user").
-		ExpectExec().WithArgs(user.PassHash, user.ID.String()).
+		ExpectExec().WithArgs(sqlmock.AnyArg(), user.ID.String()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	err := u.Update(user, user.ID.String())
@@ -255,7 +255,7 @@ func TestUpdateErrorWithPassword(t *testing.T) {
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	mock.ExpectPrepare("UPDATE user").
-		ExpectExec().WithArgs(user.PassHash, user.ID.String()).
+		ExpectExec().WithArgs(sqlmock.AnyArg(), user.ID.String()).
 		WillReturnError(fmt.Errorf("This is another error"))
 
 	err := u.Update(user, user.ID.String())

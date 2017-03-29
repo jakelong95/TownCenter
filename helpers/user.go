@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"mime/multipart"
 
+	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/alexcesaro/statsd.v2"
 
 	"github.com/ghmeier/bloodlines/gateways"
@@ -71,6 +72,8 @@ func (u *User) GetAll(offset int, limit int) ([]*models.User, error) {
 }
 
 func (u *User) Insert(user *models.User) error {
+	user.PassHash = hash(user.PassHash)
+
 	err := u.sql.Modify(
 		"INSERT INTO user (id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, profileUrl) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 		user.ID,
@@ -93,6 +96,7 @@ func (u *User) Insert(user *models.User) error {
 }
 
 func (u *User) Update(user *models.User, id string) error {
+
 	err := u.sql.Modify(
 		"UPDATE user SET firstName=?, lastName=?, email=?, phone=?, addressLine1=?, addressLine2=?, addressCity=?, addressState=?, addressZip=?, addressCountry=?, roasterId=?, profileUrl=? WHERE id=?",
 		user.FirstName,
@@ -115,6 +119,7 @@ func (u *User) Update(user *models.User, id string) error {
 	}
 
 	if user.PassHash != "" {
+		user.PassHash = hash(user.PassHash)
 		err = u.sql.Modify(
 			"UPDATE user SET passHash=? WHERE id=?",
 			user.PassHash,
@@ -157,4 +162,9 @@ func (u *User) Profile(id string, name string, body multipart.File) error {
 
 	err = u.sql.Modify("UPDATE user SET profileUrl=? WHERE id=?", url, id)
 	return err
+}
+
+func hash(s string) string {
+	hashed, _ := bcrypt.GenerateFromPassword([]byte(s), bcrypt.DefaultCost)
+	return string(hashed)
 }
