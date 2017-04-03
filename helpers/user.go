@@ -153,7 +153,7 @@ func (u *User) GetByEmail(email string) (*models.User, error) {
 	return users[0], err
 }
 
-func (u *User) Profile(id string, name string, body multipart.File) (string, error) {
+func (u *User) Profile(id string, name string, body multipart.File) error {
 	filename := fmt.Sprintf("%s-%s", id, name)
 	url, err := u.S3.Upload("profile", filename, body)
 	if err != nil {
