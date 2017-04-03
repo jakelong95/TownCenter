@@ -72,6 +72,7 @@ func (r *Roaster) New(ctx *gin.Context) {
 	}
 
 	user.RoasterId = roaster.ID
+	user.PassHash = ""
 	err = r.UserHelper.Update(user, json.UserID.String())
 
 	if err != nil {
