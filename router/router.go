@@ -98,11 +98,11 @@ func InitRouter(tc *TownCenter) {
 
 	reset := tc.router.Group("/api/reset")
 	{
-		roaster.Use(tc.roaster.Time())
+		roaster.Use(tc.reset.Time())
 		reset.POST("", tc.reset.Request)
-		roaster.Use(tc.roaster.GetJWT())
-		reset.GET("/:token", tc.reset.Get)
 		reset.POST("/:token", tc.reset.Fulfill)
+		roaster.Use(tc.reset.GetJWT())
+		reset.GET("/:token", tc.reset.Get)
 	}
 }
 

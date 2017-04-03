@@ -18,6 +18,8 @@ type ResetI interface {
 	Request(ctx *gin.Context)
 	Get(ctx *gin.Context)
 	Fulfill(ctx *gin.Context)
+	GetJWT() gin.HandlerFunc
+	Time() gin.HandlerFunc
 }
 
 type Reset struct {
@@ -100,7 +102,7 @@ func (r *Reset) Get(ctx *gin.Context) {
 }
 
 func (r *Reset) Fulfill(ctx *gin.Context) {
-	value := ctx.Query("token")
+	value := ctx.Param("token")
 
 	var json models.ResetRequest
 	err := ctx.BindJSON(&json)

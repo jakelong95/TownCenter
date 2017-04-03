@@ -221,6 +221,9 @@ func (u *User) Upload(ctx *gin.Context) {
 	id := ctx.Param("userId")
 	file, headers, err := ctx.Request.FormFile("profile")
 	if err != nil {
+		u.ServerError(ctx, err, nil)
+	}
+	if file == nil {
 		u.UserError(ctx, "ERROR: unable to find body", nil)
 	}
 	defer file.Close()
