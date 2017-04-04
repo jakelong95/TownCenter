@@ -178,7 +178,7 @@ func TestRoasterUpdateError(t *testing.T) {
 
 	mock.ExpectPrepare("UPDATE roaster").
 		ExpectExec().
-		WithArgs(roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl, roaster.ProfileUrl, roaster.ID.String()).
+		WithArgs(roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl, roaster.ID.String()).
 		WillReturnError(fmt.Errorf("This is an error"))
 
 	err := r.Update(roaster, roaster.ID.String())
