@@ -17,6 +17,7 @@ type RoasterI interface {
 	View(ctx *gin.Context)
 	Update(ctx *gin.Context)
 	Delete(ctx *gin.Context)
+	Upload(ctx *gin.Context)
 	Time() gin.HandlerFunc
 	GetJWT() gin.HandlerFunc
 }
@@ -36,7 +37,7 @@ func NewRoaster(ctx *handlers.GatewayContext) RoasterI {
 	stats := ctx.Stats.Clone(statsd.Prefix("api.roaster"))
 	return &Roaster{
 		BaseHandler: &handlers.BaseHandler{Stats: stats},
-		Helper:      helpers.NewRoaster(ctx.Sql),
+		Helper:      helpers.NewRoaster(ctx.Sql, ctx.S3),
 		UserHelper:  helpers.NewUser(ctx.Sql, ctx.S3),
 	}
 }
@@ -133,6 +134,28 @@ func (r *Roaster) Update(ctx *gin.Context) {
 	}
 
 	r.Success(ctx, json)
+}
+
+func (r *Roaster) Upload(ctx *gin.Context) {
+	id := ctx.Param("roasterId")
+	file, headers, err := ctx.Request.FormFile("profile")
+	if err != nil {
+		r.ServerError(ctx, err, nil)
+		return
+	}
+	if file == nil {
+		r.UserError(ctx, "ERROR: unable to find body", nil)
+		return
+	}
+	defer file.Close()
+
+	err = r.Helper.Profile(id, headers.Filename, file)
+	if err != nil {
+		r.ServerError(ctx, err, id)
+		return
+	}
+
+	r.Success(ctx, nil)
 }
 
 func (r *Roaster) Delete(ctx *gin.Context) {
