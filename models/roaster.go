@@ -3,7 +3,7 @@ package models
 import (
 	"database/sql"
 
-	"github.com/pborman/uuid"	
+	"github.com/pborman/uuid"
 )
 
 type Roaster struct {
@@ -17,6 +17,7 @@ type Roaster struct {
 	AddressState   string    `json:"addressState"`
 	AddressZip     string    `json:"addressZip"`
 	AddressCountry string    `json:"addressCountry"`
+	ProfileUrl     string    `json:"profileUrl"`
 }
 
 func NewRoaster(name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry string) *Roaster {
@@ -31,6 +32,7 @@ func NewRoaster(name, email, phone, addressLine1, addressLine2, addressCity, add
 		AddressState:   addressState,
 		AddressZip:     addressZip,
 		AddressCountry: addressCountry,
+		ProfileUrl:     "",
 	}
 }
 
@@ -40,7 +42,7 @@ func RoasterFromSQL(rows *sql.Rows) ([]*Roaster, error) {
 	for rows.Next() {
 		r := &Roaster{}
 
-		rows.Scan(&r.ID, &r.Name, &r.Email, &r.Phone, &r.AddressLine1, &r.AddressLine2, &r.AddressCity, &r.AddressState, &r.AddressZip, &r.AddressCountry)
+		rows.Scan(&r.ID, &r.Name, &r.Email, &r.Phone, &r.AddressLine1, &r.AddressLine2, &r.AddressCity, &r.AddressState, &r.AddressZip, &r.AddressCountry, &r.ProfileUrl)
 
 		roasters = append(roasters, r)
 	}
