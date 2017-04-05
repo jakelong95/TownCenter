@@ -34,7 +34,6 @@ type User struct {
 func NewUser(sql gateways.SQL, s3 gateways.S3) *User {
 	return &User{
 		baseHelper: &baseHelper{sql: sql},
-		S3:         s3,
 	}
 }
 

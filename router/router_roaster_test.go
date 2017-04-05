@@ -27,7 +27,7 @@ func TestRoasterViewSuccess(t *testing.T) {
 	roasterMock.On("GetByID", id.String()).Return(&models.Roaster{}, nil)
 
 	recorder := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/api/roaster/" + id.String(), nil)
+	request, _ := http.NewRequest("GET", "/api/roaster/"+id.String(), nil)
 	tc.router.ServeHTTP(recorder, request)
 
 	assert.Equal(200, recorder.Code)
@@ -43,7 +43,7 @@ func TestRoasterViewFail(t *testing.T) {
 	roasterMock.On("GetByID", id.String()).Return(nil, fmt.Errorf("This is an error"))
 
 	recorder := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/api/roaster/" + id.String(), nil)
+	request, _ := http.NewRequest("GET", "/api/roaster/"+id.String(), nil)
 	tc.router.ServeHTTP(recorder, request)
 
 	assert.Equal(500, recorder.Code)
@@ -100,7 +100,7 @@ func TestRoasterNewSuccess(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	tc, roasterMock := mockRoaster()
-	roasterMock.On("Insert", mock.AnythingOfType("*models.Roaster")).Return(nil)
+	roasterMock.On("Insert", mock.AnythingOfType("*models.Roaster"), mock.AnythingOfType("uuid.UUID")).Return(nil)
 
 	roaster := getRoasterString(models.NewRoaster("", "", "", "", "", "", "", "", ""))
 	recorder := httptest.NewRecorder()

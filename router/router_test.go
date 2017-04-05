@@ -7,7 +7,7 @@ import (
 	"github.com/ghmeier/bloodlines/config"
 	h "github.com/ghmeier/bloodlines/handlers"
 	m "github.com/ghmeier/bloodlines/models"
-	mocks "github.com/jakelong95/TownCenter/_mocks"
+	mocks "github.com/jakelong95/TownCenter/_mocks/helpers"
 	"github.com/jakelong95/TownCenter/handlers"
 	"github.com/jakelong95/TownCenter/models"
 

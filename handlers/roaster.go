@@ -37,7 +37,7 @@ func NewRoaster(ctx *handlers.GatewayContext) RoasterI {
 	stats := ctx.Stats.Clone(statsd.Prefix("api.roaster"))
 	return &Roaster{
 		BaseHandler: &handlers.BaseHandler{Stats: stats},
-		Helper:      helpers.NewRoaster(ctx.Sql, ctx.S3),
+		Helper:      helpers.NewRoaster(ctx.Sql, ctx.S3, ctx.Coinage),
 		UserHelper:  helpers.NewUser(ctx.Sql, ctx.S3),
 	}
 }
@@ -53,7 +53,7 @@ func (r *Roaster) New(ctx *gin.Context) {
 
 	//Create the new roaster in the database
 	roaster := models.NewRoaster(json.Roaster.Name, json.Roaster.Email, json.Roaster.Phone, json.Roaster.AddressLine1, json.Roaster.AddressLine2, json.Roaster.AddressCity, json.Roaster.AddressState, json.Roaster.AddressZip, json.Roaster.AddressCountry)
-	err = r.Helper.Insert(roaster)
+	err = r.Helper.Insert(roaster, json.UserID)
 	if err != nil {
 		r.ServerError(ctx, err, json)
 		return

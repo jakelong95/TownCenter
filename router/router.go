@@ -9,6 +9,7 @@ import (
 	"github.com/ghmeier/bloodlines/config"
 	"github.com/ghmeier/bloodlines/gateways"
 	h "github.com/ghmeier/bloodlines/handlers"
+	c "github.com/ghmeier/coinage/gateways"
 	"github.com/jakelong95/TownCenter/handlers"
 )
 
@@ -40,14 +41,13 @@ func New(config *config.Root) (*TownCenter, error) {
 	s3 := gateways.NewS3(config.S3)
 
 	bloodlines := gateways.NewBloodlines(config.Bloodlines)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	coinage := c.NewCoinage(config.Coinage)
 
 	ctx := &h.GatewayContext{
 		Sql:        sql,
 		Stats:      stats,
 		Bloodlines: bloodlines,
+		Coinage:    coinage,
 		S3:         s3,
 	}
 

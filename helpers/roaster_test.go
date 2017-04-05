@@ -8,6 +8,8 @@ import (
 
 	mocks "github.com/ghmeier/bloodlines/_mocks/gateways"
 	"github.com/ghmeier/bloodlines/gateways"
+	cmocks "github.com/ghmeier/coinage/_mocks/gateways"
+	cmodels "github.com/ghmeier/coinage/models"
 	"github.com/jakelong95/TownCenter/models"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -121,16 +123,43 @@ func TestRoasterInsert(t *testing.T) {
 	roaster := getDefaultRoaster()
 	s, mock, _ := sqlmock.New()
 	r := getMockRoaster(s)
+	coinage := &cmocks.Coinage{}
+	r.Coinage = coinage
+	rrequest := &cmodels.RoasterRequest{
+		Country: roaster.AddressCountry,
+		UserID:  uuid.NewUUID(),
+	}
 
+	coinage.On("NewRoaster", rrequest).Return(nil, nil)
 	mock.ExpectPrepare("INSERT INTO roaster").
 		ExpectExec().
 		WithArgs(roaster.ID.String(), roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
-	err := r.Insert(roaster)
+	err := r.Insert(roaster, rrequest.UserID)
 
 	assert.Equal(mock.ExpectationsWereMet(), nil)
 	assert.NoError(err)
+}
+
+func TestRoasterInsertCoinageError(t *testing.T) {
+	assert := assert.New(t)
+
+	roaster := getDefaultRoaster()
+	s, mock, _ := sqlmock.New()
+	r := getMockRoaster(s)
+	coinage := &cmocks.Coinage{}
+	r.Coinage = coinage
+	rrequest := &cmodels.RoasterRequest{
+		Country: roaster.AddressCountry,
+		UserID:  uuid.NewUUID(),
+	}
+
+	coinage.On("NewRoaster", rrequest).Return(nil, fmt.Errorf("some error"))
+	err := r.Insert(roaster, rrequest.UserID)
+
+	assert.Equal(mock.ExpectationsWereMet(), nil)
+	assert.Error(err)
 }
 
 func TestRoasterInsertError(t *testing.T) {
@@ -139,13 +168,20 @@ func TestRoasterInsertError(t *testing.T) {
 	roaster := getDefaultRoaster()
 	s, mock, _ := sqlmock.New()
 	r := getMockRoaster(s)
+	coinage := &cmocks.Coinage{}
+	r.Coinage = coinage
+	rrequest := &cmodels.RoasterRequest{
+		Country: roaster.AddressCountry,
+		UserID:  uuid.NewUUID(),
+	}
 
+	coinage.On("NewRoaster", rrequest).Return(nil, nil)
 	mock.ExpectPrepare("INSERT INTO roaster").
 		ExpectExec().
 		WithArgs(roaster.ID.String(), roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl).
 		WillReturnError(fmt.Errorf("This is an error"))
 
-	err := r.Insert(roaster)
+	err := r.Insert(roaster, rrequest.UserID)
 
 	assert.Equal(mock.ExpectationsWereMet(), nil)
 	assert.Error(err)
@@ -274,5 +310,5 @@ func getRoasterMockRows() sqlmock.Rows {
 }
 
 func getMockRoaster(s *sql.DB) *Roaster {
-	return NewRoaster(&gateways.MySQL{DB: s}, nil)
+	return NewRoaster(&gateways.MySQL{DB: s}, nil, nil)
 }

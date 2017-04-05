@@ -5,13 +5,17 @@ import (
 	"mime/multipart"
 
 	"github.com/ghmeier/bloodlines/gateways"
+	gcoinage "github.com/ghmeier/coinage/gateways"
+	mcoinage "github.com/ghmeier/coinage/models"
 	"github.com/jakelong95/TownCenter/models"
+
+	"github.com/pborman/uuid"
 )
 
 type RoasterI interface {
 	GetByID(string) (*models.Roaster, error)
 	GetAll(int, int) ([]*models.Roaster, error)
-	Insert(*models.Roaster) error
+	Insert(*models.Roaster, uuid.UUID) error
 	Update(*models.Roaster, string) error
 	Profile(string, string, multipart.File) error
 	Delete(string) error
@@ -19,13 +23,15 @@ type RoasterI interface {
 
 type Roaster struct {
 	*baseHelper
-	S3 gateways.S3
+	S3      gateways.S3
+	Coinage gcoinage.Coinage
 }
 
-func NewRoaster(sql gateways.SQL, s3 gateways.S3) *Roaster {
+func NewRoaster(sql gateways.SQL, s3 gateways.S3, coinage gcoinage.Coinage) *Roaster {
 	return &Roaster{
 		baseHelper: &baseHelper{sql: sql},
 		S3:         s3,
+		Coinage:    coinage,
 	}
 }
 
@@ -61,8 +67,17 @@ func (r *Roaster) GetAll(offset int, limit int) ([]*models.Roaster, error) {
 	return roasters, err
 }
 
-func (r *Roaster) Insert(roaster *models.Roaster) error {
-	err := r.sql.Modify(
+func (r *Roaster) Insert(roaster *models.Roaster, id uuid.UUID) error {
+	rr := &mcoinage.RoasterRequest{
+		UserID:  id,
+		Country: roaster.AddressCountry,
+	}
+	_, err := r.Coinage.NewRoaster(rr)
+	if err != nil {
+		return err
+	}
+
+	err = r.sql.Modify(
 		"INSERT INTO roaster (id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl) VALUE (?,?,?,?,?,?,?,?,?,?,?)",
 		roaster.ID,
 		roaster.Name,
