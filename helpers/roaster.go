@@ -15,8 +15,9 @@ import (
 type RoasterI interface {
 	GetByID(string) (*models.Roaster, error)
 	GetAll(int, int) ([]*models.Roaster, error)
-	Insert(*models.Roaster, uuid.UUID) error
+	Insert(*models.Roaster) error
 	Update(*models.Roaster, string) error
+	CreateAccount(id uuid.UUID) error
 	Profile(string, string, multipart.File) error
 	Delete(string) error
 }
@@ -67,17 +68,8 @@ func (r *Roaster) GetAll(offset int, limit int) ([]*models.Roaster, error) {
 	return roasters, err
 }
 
-func (r *Roaster) Insert(roaster *models.Roaster, id uuid.UUID) error {
-	rr := &mcoinage.RoasterRequest{
-		UserID:  id,
-		Country: roaster.AddressCountry,
-	}
-	_, err := r.Coinage.NewRoaster(rr)
-	if err != nil {
-		return err
-	}
-
-	err = r.sql.Modify(
+func (r *Roaster) Insert(roaster *models.Roaster) error {
+	err := r.sql.Modify(
 		"INSERT INTO roaster (id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl) VALUE (?,?,?,?,?,?,?,?,?,?,?)",
 		roaster.ID,
 		roaster.Name,
@@ -91,7 +83,6 @@ func (r *Roaster) Insert(roaster *models.Roaster, id uuid.UUID) error {
 		roaster.AddressCountry,
 		roaster.ProfileUrl,
 	)
-
 	return err
 }
 
@@ -111,6 +102,13 @@ func (r *Roaster) Update(roaster *models.Roaster, roasterId string) error {
 		roasterId,
 	)
 
+	return err
+}
+
+func (r *Roaster) CreateAccount(id uuid.UUID) error {
+	_, err := r.Coinage.NewRoaster(&mcoinage.RoasterRequest{
+		UserID: id,
+	})
 	return err
 }
 

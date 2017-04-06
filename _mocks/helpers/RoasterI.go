@@ -11,6 +11,20 @@ type RoasterI struct {
 	mock.Mock
 }
 
+// CreateAccount provides a mock function with given fields: id
+func (_m *RoasterI) CreateAccount(id uuid.UUID) error {
+	ret := _m.Called(id)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(uuid.UUID) error); ok {
+		r0 = rf(id)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Delete provides a mock function with given fields: _a0
 func (_m *RoasterI) Delete(_a0 string) error {
 	ret := _m.Called(_a0)
@@ -71,13 +85,13 @@ func (_m *RoasterI) GetByID(_a0 string) (*models.Roaster, error) {
 	return r0, r1
 }
 
-// Insert provides a mock function with given fields: _a0, _a1
-func (_m *RoasterI) Insert(_a0 *models.Roaster, _a1 uuid.UUID) error {
-	ret := _m.Called(_a0, _a1)
+// Insert provides a mock function with given fields: _a0
+func (_m *RoasterI) Insert(_a0 *models.Roaster) error {
+	ret := _m.Called(_a0)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*models.Roaster, uuid.UUID) error); ok {
-		r0 = rf(_a0, _a1)
+	if rf, ok := ret.Get(0).(func(*models.Roaster) error); ok {
+		r0 = rf(_a0)
 	} else {
 		r0 = ret.Error(0)
 	}

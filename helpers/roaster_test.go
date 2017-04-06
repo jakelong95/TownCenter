@@ -126,8 +126,7 @@ func TestRoasterInsert(t *testing.T) {
 	coinage := &cmocks.Coinage{}
 	r.Coinage = coinage
 	rrequest := &cmodels.RoasterRequest{
-		Country: roaster.AddressCountry,
-		UserID:  uuid.NewUUID(),
+		UserID: uuid.NewUUID(),
 	}
 
 	coinage.On("NewRoaster", rrequest).Return(nil, nil)
@@ -136,7 +135,7 @@ func TestRoasterInsert(t *testing.T) {
 		WithArgs(roaster.ID.String(), roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
-	err := r.Insert(roaster, rrequest.UserID)
+	err := r.Insert(roaster)
 
 	assert.Equal(mock.ExpectationsWereMet(), nil)
 	assert.NoError(err)
@@ -151,12 +150,11 @@ func TestRoasterInsertCoinageError(t *testing.T) {
 	coinage := &cmocks.Coinage{}
 	r.Coinage = coinage
 	rrequest := &cmodels.RoasterRequest{
-		Country: roaster.AddressCountry,
-		UserID:  uuid.NewUUID(),
+		UserID: uuid.NewUUID(),
 	}
 
 	coinage.On("NewRoaster", rrequest).Return(nil, fmt.Errorf("some error"))
-	err := r.Insert(roaster, rrequest.UserID)
+	err := r.Insert(roaster)
 
 	assert.Equal(mock.ExpectationsWereMet(), nil)
 	assert.Error(err)
@@ -171,8 +169,7 @@ func TestRoasterInsertError(t *testing.T) {
 	coinage := &cmocks.Coinage{}
 	r.Coinage = coinage
 	rrequest := &cmodels.RoasterRequest{
-		Country: roaster.AddressCountry,
-		UserID:  uuid.NewUUID(),
+		UserID: uuid.NewUUID(),
 	}
 
 	coinage.On("NewRoaster", rrequest).Return(nil, nil)
@@ -181,7 +178,7 @@ func TestRoasterInsertError(t *testing.T) {
 		WithArgs(roaster.ID.String(), roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl).
 		WillReturnError(fmt.Errorf("This is an error"))
 
-	err := r.Insert(roaster, rrequest.UserID)
+	err := r.Insert(roaster)
 
 	assert.Equal(mock.ExpectationsWereMet(), nil)
 	assert.Error(err)

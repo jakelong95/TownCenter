@@ -100,7 +100,8 @@ func TestRoasterNewSuccess(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	tc, roasterMock := mockRoaster()
-	roasterMock.On("Insert", mock.AnythingOfType("*models.Roaster"), mock.AnythingOfType("uuid.UUID")).Return(nil)
+	roasterMock.On("Insert", mock.AnythingOfType("*models.Roaster")).Return(nil)
+	roasterMock.On("CreateAccount", mock.AnythingOfType("uuid.UUID")).Return(nil)
 
 	roaster := getRoasterString(models.NewRoaster("", "", "", "", "", "", "", "", ""))
 	recorder := httptest.NewRecorder()
