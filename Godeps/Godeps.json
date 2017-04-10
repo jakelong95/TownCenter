@@ -52,35 +52,39 @@
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/_mocks/gateways",
-			"Rev": "162a712f1ef55248298db808bc65d81086691da5"
+			"Rev": "9de3ef307001d52cc1b8fad3ad73e2366c3689b4"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/config",
-			"Rev": "162a712f1ef55248298db808bc65d81086691da5"
+			"Rev": "9de3ef307001d52cc1b8fad3ad73e2366c3689b4"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/gateways",
-			"Rev": "162a712f1ef55248298db808bc65d81086691da5"
+			"Rev": "9de3ef307001d52cc1b8fad3ad73e2366c3689b4"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/handlers",
-			"Rev": "162a712f1ef55248298db808bc65d81086691da5"
+			"Rev": "9de3ef307001d52cc1b8fad3ad73e2366c3689b4"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/helpers",
-			"Rev": "162a712f1ef55248298db808bc65d81086691da5"
+			"Rev": "9de3ef307001d52cc1b8fad3ad73e2366c3689b4"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/bloodlines/models",
-			"Rev": "162a712f1ef55248298db808bc65d81086691da5"
+			"Rev": "9de3ef307001d52cc1b8fad3ad73e2366c3689b4"
+		},
+		{
+			"ImportPath": "github.com/ghmeier/coinage/_mocks/gateways",
+			"Rev": "9a362c6a5e02afe7b85049b9ea13d4ba5d1f103d"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/gateways",
-			"Rev": "d790c2404c7a1f37409265a9df31487c5991cb2c"
+			"Rev": "9a362c6a5e02afe7b85049b9ea13d4ba5d1f103d"
 		},
 		{
 			"ImportPath": "github.com/ghmeier/coinage/models",
-			"Rev": "d790c2404c7a1f37409265a9df31487c5991cb2c"
+			"Rev": "9a362c6a5e02afe7b85049b9ea13d4ba5d1f103d"
 		},
 		{
 			"ImportPath": "github.com/gin-gonic/gin/binding",
@@ -102,12 +106,17 @@
 			"Rev": "98fa357170587e470c5f27d3c3ea0947b71eb455"
 		},
 		{
+			"ImportPath": "github.com/imdario/mergo",
+			"Comment": "0.2.2-10-gd806ba8",
+			"Rev": "d806ba8c21777d504a2090a2ca4913c750dd3a33"
+		},
+		{
 			"ImportPath": "github.com/lcollin/warehouse/gateways",
-			"Rev": "0ba19bf94e756ccea59386e46b0405324e6928d9"
+			"Rev": "bfc6e4e1be39aca869d8977031cac7652439ff64"
 		},
 		{
 			"ImportPath": "github.com/lcollin/warehouse/models",
-			"Rev": "0ba19bf94e756ccea59386e46b0405324e6928d9"
+			"Rev": "bfc6e4e1be39aca869d8977031cac7652439ff64"
 		},
 		{
 			"ImportPath": "github.com/manucorporat/sse",
@@ -164,11 +173,11 @@
 		},
 		{
 			"ImportPath": "github.com/yuderekyu/covenant/gateways",
-			"Rev": "e506c7655d30c8183e8ad4947fc38730b35cdca0"
+			"Rev": "aa8694bf1930838d01b41250dbc0d5c13109fee9"
 		},
 		{
 			"ImportPath": "github.com/yuderekyu/covenant/models",
-			"Rev": "e506c7655d30c8183e8ad4947fc38730b35cdca0"
+			"Rev": "aa8694bf1930838d01b41250dbc0d5c13109fee9"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/bcrypt",

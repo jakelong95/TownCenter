@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"fmt"
 	"os"
 	"time"
 
+	"github.com/imdario/mergo"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/alexcesaro/statsd.v2"
 	"gopkg.in/gin-gonic/gin.v1"
@@ -147,6 +149,23 @@ func (u *User) Update(ctx *gin.Context) {
 	err := ctx.BindJSON(&json)
 	if err != nil {
 		u.UserError(ctx, "Error: Unable to parse json", err)
+		return
+	}
+
+	user, err := u.Helper.GetByID(userId)
+	if err != nil {
+		u.ServerError(ctx, fmt.Errorf("Error: Unable to update user, try again."), nil)
+		return
+	}
+	if user == nil {
+		u.NotFoundError(ctx, "Error: No user found.")
+		return
+	}
+
+	// merge existing user to json so empty fields don't override
+	err = mergo.Merge(&json, user)
+	if err != nil {
+		u.ServerError(ctx, err, json)
 		return
 	}
 

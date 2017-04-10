@@ -170,6 +170,7 @@ func TestUserUpdateSuccess(t *testing.T) {
 	user := models.NewUser("", "", "", "", "", "", "", "", "", "", "")
 
 	tc, userMock := mockUser()
+	userMock.On("GetByID", user.ID.String()).Return(user, nil)
 	userMock.On("Update", user, user.ID.String()).Return(nil)
 
 	recorder := httptest.NewRecorder()
@@ -187,6 +188,7 @@ func TestUserUpdateFail(t *testing.T) {
 	user := models.NewUser("", "", "", "", "", "", "", "", "", "", "")
 
 	tc, userMock := mockUser()
+	userMock.On("GetByID", user.ID.String()).Return(user, nil)
 	userMock.On("Update", user, user.ID.String()).Return(fmt.Errorf("This is an error"))
 
 	recorder := httptest.NewRecorder()
@@ -200,8 +202,10 @@ func TestUserUpdateInvalid(t *testing.T) {
 	assert := assert.New(t)
 
 	gin.SetMode(gin.TestMode)
+	user := models.NewUser("", "", "", "", "", "", "", "", "", "", "")
 
 	tc, userMock := mockUser()
+	userMock.On("GetByID", user.ID.String()).Return(user, nil)
 	userMock.On("Update", mock.AnythingOfType("*models.User"), "").Return(fmt.Errorf("some error"))
 
 	recorder := httptest.NewRecorder()
@@ -209,6 +213,59 @@ func TestUserUpdateInvalid(t *testing.T) {
 	tc.router.ServeHTTP(recorder, request)
 
 	assert.Equal(400, recorder.Code)
+}
+
+func TestUserUpdateNoUser(t *testing.T) {
+	assert := assert.New(t)
+
+	gin.SetMode(gin.TestMode)
+	user := models.NewUser("", "", "", "", "", "", "", "", "", "", "")
+
+	tc, userMock := mockUser()
+	userMock.On("GetByID", user.ID.String()).Return(nil, nil)
+
+	recorder := httptest.NewRecorder()
+	request, _ := http.NewRequest("PUT", "/api/user/"+user.ID.String(), getUserString(user))
+	tc.router.ServeHTTP(recorder, request)
+
+	assert.Equal(404, recorder.Code)
+}
+
+func TestUserUpdateGetError(t *testing.T) {
+	assert := assert.New(t)
+
+	gin.SetMode(gin.TestMode)
+	user := models.NewUser("", "", "", "", "", "", "", "", "", "", "")
+
+	tc, userMock := mockUser()
+	userMock.On("GetByID", user.ID.String()).Return(nil, fmt.Errorf("some error"))
+
+	recorder := httptest.NewRecorder()
+	request, _ := http.NewRequest("PUT", "/api/user/"+user.ID.String(), getUserString(user))
+	tc.router.ServeHTTP(recorder, request)
+
+	assert.Equal(500, recorder.Code)
+}
+
+func TestUserUpdateMaintainRoasterID(t *testing.T) {
+	assert := assert.New(t)
+
+	gin.SetMode(gin.TestMode)
+	user := models.NewUser("", "", "", "", "", "", "", "", "", "", "")
+	existing := models.NewUser("", "", "", "", "", "", "", "", "", "", "")
+	existing.ID = user.ID
+	existing.RoasterId = uuid.NewUUID()
+
+	tc, userMock := mockUser()
+	userMock.On("GetByID", user.ID.String()).Return(existing, nil)
+	// ensures that values from existing get transitioned to update
+	userMock.On("Update", existing, user.ID.String()).Return(nil)
+
+	recorder := httptest.NewRecorder()
+	request, _ := http.NewRequest("PUT", "/api/user/"+user.ID.String(), getUserString(user))
+	tc.router.ServeHTTP(recorder, request)
+
+	assert.Equal(200, recorder.Code)
 }
 
 func TestUserDeleteSuccess(t *testing.T) {
