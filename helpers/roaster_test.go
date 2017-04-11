@@ -24,9 +24,9 @@ func TestRoasterGetByID(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	r := getMockRoaster(s)
 
-	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl FROM roaster").
+	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl, birth FROM roaster").
 		WithArgs(id.String()).
-		WillReturnRows(getRoasterMockRows().AddRow(id.String(), "Name", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", ""))
+		WillReturnRows(getRoasterMockRows().AddRow(id.String(), "Name", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", "", "01/01/1990"))
 
 	roaster, err := r.GetByID(id.String())
 
@@ -43,6 +43,7 @@ func TestRoasterGetByID(t *testing.T) {
 	assert.Equal(roaster.AddressZip, "AddressZip")
 	assert.Equal(roaster.AddressCountry, "AddressCountry")
 	assert.Equal(roaster.ProfileUrl, "")
+	assert.Equal(roaster.Birthday, "01/01/1990")
 }
 
 func TestRoasterGetByIDError(t *testing.T) {
@@ -52,7 +53,7 @@ func TestRoasterGetByIDError(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	r := getMockRoaster(s)
 
-	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl FROM roaster").
+	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl, birth FROM roaster").
 		WithArgs(id.String()).
 		WillReturnError(fmt.Errorf("This is an error"))
 
@@ -69,7 +70,7 @@ func TestRoasterGetByIDDoesNotExist(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	r := getMockRoaster(s)
 
-	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl FROM roaster").
+	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl, birth FROM roaster").
 		WithArgs(id.String()).
 		WillReturnRows(getRoasterMockRows())
 
@@ -87,11 +88,11 @@ func TestRoasterGetAll(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	r := getMockRoaster(s)
 
-	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl FROM roaster").
+	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl, birth FROM roaster").
 		WithArgs(offset, limit).
 		WillReturnRows(getRoasterMockRows().
-			AddRow(uuid.New(), "Name", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", "").
-			AddRow(uuid.New(), "Name", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", ""))
+			AddRow(uuid.New(), "Name", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", "", "01/01/1990").
+			AddRow(uuid.New(), "Name", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", "", "01/01/1990"))
 
 	roasters, err := r.GetAll(offset, limit)
 
@@ -107,7 +108,7 @@ func TestRoasterGetAllError(t *testing.T) {
 	s, mock, _ := sqlmock.New()
 	r := getMockRoaster(s)
 
-	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl FROM roaster").
+	mock.ExpectQuery("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl, birth FROM roaster").
 		WithArgs(offset, limit).
 		WillReturnError(fmt.Errorf("This is an error"))
 
@@ -132,7 +133,7 @@ func TestRoasterInsert(t *testing.T) {
 	coinage.On("NewRoaster", rrequest).Return(nil, nil)
 	mock.ExpectPrepare("INSERT INTO roaster").
 		ExpectExec().
-		WithArgs(roaster.ID.String(), roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl).
+		WithArgs(roaster.ID.String(), roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl, roaster.Birthday).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	err := r.Insert(roaster)
@@ -175,7 +176,7 @@ func TestRoasterInsertError(t *testing.T) {
 	coinage.On("NewRoaster", rrequest).Return(nil, nil)
 	mock.ExpectPrepare("INSERT INTO roaster").
 		ExpectExec().
-		WithArgs(roaster.ID.String(), roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl).
+		WithArgs(roaster.ID.String(), roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl, roaster.Birthday).
 		WillReturnError(fmt.Errorf("This is an error"))
 
 	err := r.Insert(roaster)
@@ -193,7 +194,7 @@ func TestRoasterUpdate(t *testing.T) {
 
 	mock.ExpectPrepare("UPDATE roaster").
 		ExpectExec().
-		WithArgs(roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl, roaster.ID.String()).
+		WithArgs(roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl, roaster.Birthday, roaster.ID.String()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	err := r.Update(roaster, roaster.ID.String())
@@ -211,7 +212,7 @@ func TestRoasterUpdateError(t *testing.T) {
 
 	mock.ExpectPrepare("UPDATE roaster").
 		ExpectExec().
-		WithArgs(roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl, roaster.ID.String()).
+		WithArgs(roaster.Name, roaster.Email, roaster.Phone, roaster.AddressLine1, roaster.AddressLine2, roaster.AddressCity, roaster.AddressState, roaster.AddressZip, roaster.AddressCountry, roaster.ProfileUrl, roaster.Birthday, roaster.ID.String()).
 		WillReturnError(fmt.Errorf("This is an error"))
 
 	err := r.Update(roaster, roaster.ID.String())
@@ -299,11 +300,11 @@ func TestRoasterProfileError(t *testing.T) {
 }
 
 func getDefaultRoaster() *models.Roaster {
-	return models.NewRoaster("Name", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry")
+	return models.NewRoaster("Name", "Email", "Phone", "AddressLine1", "AddressLine2", "AddressCity", "AddressState", "AddressZip", "AddressCountry", "Birthday")
 }
 
 func getRoasterMockRows() sqlmock.Rows {
-	return sqlmock.NewRows([]string{"id", "name", "email", "phone", "addressLine1", "addressLine2", "addressCity", "addressState", "addressZip", "addressCountry", "profileUrl"})
+	return sqlmock.NewRows([]string{"id", "name", "email", "phone", "addressLine1", "addressLine2", "addressCity", "addressState", "addressZip", "addressCountry", "profileUrl", "birth"})
 }
 
 func getMockRoaster(s *sql.DB) *Roaster {

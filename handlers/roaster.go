@@ -52,7 +52,7 @@ func (r *Roaster) New(ctx *gin.Context) {
 	}
 
 	//Create the new roaster in the database
-	roaster := models.NewRoaster(json.Roaster.Name, json.Roaster.Email, json.Roaster.Phone, json.Roaster.AddressLine1, json.Roaster.AddressLine2, json.Roaster.AddressCity, json.Roaster.AddressState, json.Roaster.AddressZip, json.Roaster.AddressCountry)
+	roaster := models.NewRoaster(json.Roaster.Name, json.Roaster.Email, json.Roaster.Phone, json.Roaster.AddressLine1, json.Roaster.AddressLine2, json.Roaster.AddressCity, json.Roaster.AddressState, json.Roaster.AddressZip, json.Roaster.AddressCountry, json.Roaster.Birthday)
 	err = r.Helper.Insert(roaster)
 	if err != nil {
 		r.ServerError(ctx, err, json)
