@@ -18,9 +18,10 @@ type Roaster struct {
 	AddressZip     string    `json:"addressZip"`
 	AddressCountry string    `json:"addressCountry"`
 	ProfileUrl     string    `json:"profileUrl"`
+	Birthday       string    `json:"birth"`
 }
 
-func NewRoaster(name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry string) *Roaster {
+func NewRoaster(name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, birth string) *Roaster {
 	return &Roaster{
 		ID:             uuid.NewUUID(),
 		Name:           name,
@@ -33,6 +34,7 @@ func NewRoaster(name, email, phone, addressLine1, addressLine2, addressCity, add
 		AddressZip:     addressZip,
 		AddressCountry: addressCountry,
 		ProfileUrl:     "",
+		Birthday:       birth,
 	}
 }
 
@@ -42,7 +44,7 @@ func RoasterFromSQL(rows *sql.Rows) ([]*Roaster, error) {
 	for rows.Next() {
 		r := &Roaster{}
 
-		rows.Scan(&r.ID, &r.Name, &r.Email, &r.Phone, &r.AddressLine1, &r.AddressLine2, &r.AddressCity, &r.AddressState, &r.AddressZip, &r.AddressCountry, &r.ProfileUrl)
+		rows.Scan(&r.ID, &r.Name, &r.Email, &r.Phone, &r.AddressLine1, &r.AddressLine2, &r.AddressCity, &r.AddressState, &r.AddressZip, &r.AddressCountry, &r.ProfileUrl, &r.Birthday)
 
 		roasters = append(roasters, r)
 	}

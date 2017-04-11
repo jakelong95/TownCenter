@@ -37,7 +37,7 @@ func NewRoaster(sql gateways.SQL, s3 gateways.S3, coinage gcoinage.Coinage) *Roa
 }
 
 func (r *Roaster) GetByID(id string) (*models.Roaster, error) {
-	rows, err := r.sql.Select("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl FROM roaster WHERE id=?", id)
+	rows, err := r.sql.Select("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl, birth FROM roaster WHERE id=?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (r *Roaster) GetByID(id string) (*models.Roaster, error) {
 }
 
 func (r *Roaster) GetAll(offset int, limit int) ([]*models.Roaster, error) {
-	rows, err := r.sql.Select("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl FROM roaster ORDER BY id ASC LIMIT ?,?", offset, limit)
+	rows, err := r.sql.Select("SELECT id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl, birth FROM roaster ORDER BY id ASC LIMIT ?,?", offset, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (r *Roaster) GetAll(offset int, limit int) ([]*models.Roaster, error) {
 
 func (r *Roaster) Insert(roaster *models.Roaster) error {
 	err := r.sql.Modify(
-		"INSERT INTO roaster (id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl) VALUE (?,?,?,?,?,?,?,?,?,?,?)",
+		"INSERT INTO roaster (id, name, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, profileUrl, birth) VALUE (?,?,?,?,?,?,?,?,?,?,?,?)",
 		roaster.ID,
 		roaster.Name,
 		roaster.Email,
@@ -82,13 +82,14 @@ func (r *Roaster) Insert(roaster *models.Roaster) error {
 		roaster.AddressZip,
 		roaster.AddressCountry,
 		roaster.ProfileUrl,
+		roaster.Birthday,
 	)
 	return err
 }
 
 func (r *Roaster) Update(roaster *models.Roaster, roasterId string) error {
 	err := r.sql.Modify(
-		"UPDATE roaster SET name=?, email=?, phone=?, addressLine1=?, addressLine2=?, addressCity=?, addressState=?, addressZip=?, addressCountry=?, profileUrl=? WHERE id=?",
+		"UPDATE roaster SET name=?, email=?, phone=?, addressLine1=?, addressLine2=?, addressCity=?, addressState=?, addressZip=?, addressCountry=?, profileUrl=?, birth=? WHERE id=?",
 		roaster.Name,
 		roaster.Email,
 		roaster.Phone,
@@ -99,6 +100,7 @@ func (r *Roaster) Update(roaster *models.Roaster, roasterId string) error {
 		roaster.AddressZip,
 		roaster.AddressCountry,
 		roaster.ProfileUrl,
+		roaster.Birthday,
 		roasterId,
 	)
 

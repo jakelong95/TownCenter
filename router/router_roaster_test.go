@@ -103,7 +103,7 @@ func TestRoasterNewSuccess(t *testing.T) {
 	roasterMock.On("Insert", mock.AnythingOfType("*models.Roaster")).Return(nil)
 	roasterMock.On("CreateAccount", mock.AnythingOfType("uuid.UUID")).Return(nil)
 
-	roaster := getRoasterString(models.NewRoaster("", "", "", "", "", "", "", "", ""))
+	roaster := getRoasterString(models.NewRoaster("", "", "", "", "", "", "", "", "", ""))
 	recorder := httptest.NewRecorder()
 	request, _ := http.NewRequest("POST", "/api/roaster", roaster)
 	tc.router.ServeHTTP(recorder, request)
@@ -119,7 +119,7 @@ func TestRoasterNewFail(t *testing.T) {
 	tc, roasterMock := mockRoaster()
 	roasterMock.On("Insert", mock.AnythingOfType("*models.Roaster")).Return(fmt.Errorf("This is an error"))
 
-	roaster := getRoasterString(models.NewRoaster("", "", "", "", "", "", "", "", ""))
+	roaster := getRoasterString(models.NewRoaster("", "", "", "", "", "", "", "", "", ""))
 	recorder := httptest.NewRecorder()
 	request, _ := http.NewRequest("POST", "/api/roaster", roaster)
 	tc.router.ServeHTTP(recorder, request)
@@ -148,7 +148,7 @@ func TestRoasterUpdateSuccess(t *testing.T) {
 
 	gin.SetMode(gin.TestMode)
 
-	roaster := models.NewRoaster("", "", "", "", "", "", "", "", "")
+	roaster := models.NewRoaster("", "", "", "", "", "", "", "", "", "")
 
 	tc, roasterMock := mockRoaster()
 	roasterMock.On("Update", roaster, roaster.ID.String()).Return(nil)
@@ -165,7 +165,7 @@ func TestRoasterUpdateFail(t *testing.T) {
 
 	gin.SetMode(gin.TestMode)
 
-	roaster := models.NewRoaster("", "", "", "", "", "", "", "", "")
+	roaster := models.NewRoaster("", "", "", "", "", "", "", "", "", "")
 
 	tc, roasterMock := mockRoaster()
 	roasterMock.On("Update", roaster, roaster.ID.String()).Return(fmt.Errorf("This is an error"))
