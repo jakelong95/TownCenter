@@ -1,5 +1,6 @@
 package mocks
 
+import helpers "github.com/jakelong95/TownCenter/helpers"
 import mock "github.com/stretchr/testify/mock"
 import models "github.com/jakelong95/TownCenter/models"
 import multipart "mime/multipart"
@@ -125,3 +126,5 @@ func (_m *RoasterI) Update(_a0 *models.Roaster, _a1 string) error {
 
 	return r0
 }
+
+var _ helpers.RoasterI = (*RoasterI)(nil)

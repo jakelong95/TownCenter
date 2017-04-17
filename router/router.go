@@ -95,6 +95,7 @@ func InitRouter(tc *TownCenter) {
 		roaster.DELETE("/:roasterId", tc.roaster.Delete)
 		roaster.GET("/:roasterId", tc.roaster.View)
 		roaster.POST("/:roasterId/photo", tc.roaster.Upload)
+		roaster.GET("/:roasterId/user", tc.user.ViewByRoaster)
 	}
 
 	reset := tc.router.Group("/api/reset")

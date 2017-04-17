@@ -24,6 +24,7 @@ type UserI interface {
 	ViewAll(ctx *gin.Context)
 	View(ctx *gin.Context)
 	ViewByToken(ctx *gin.Context)
+	ViewByRoaster(ctx *gin.Context)
 	Update(ctx *gin.Context)
 	Delete(ctx *gin.Context)
 	Login(ctx *gin.Context)
@@ -120,6 +121,28 @@ func (u *User) ViewByToken(ctx *gin.Context) {
 	}
 
 	u.viewByID(ctx, uuid.Parse(userID))
+}
+
+func (u *User) ViewByRoaster(ctx *gin.Context) {
+	roasterID := ctx.Param("roasterId")
+
+	if roasterID == "" {
+		u.UserError(ctx, "Error: no roasterId found", nil)
+		return
+	}
+
+	user, err := u.Helper.GetByRoaster(roasterID)
+	if err != nil {
+		u.ServerError(ctx, err, nil)
+		return
+	}
+	if user == nil {
+		u.NotFoundError(ctx, "Error: no user for that roaster")
+		return
+	}
+
+	user.PassHash = ""
+	u.Success(ctx, user)
 }
 
 func (u *User) viewByID(ctx *gin.Context, id uuid.UUID) {

@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"database/sql"
 	"fmt"
 	"mime/multipart"
 
@@ -18,6 +19,7 @@ type baseHelper struct {
 
 type UserI interface {
 	GetByID(string) (*models.User, error)
+	GetByRoaster(string) (*models.User, error)
 	GetAll(int, int) ([]*models.User, error)
 	Insert(*models.User) error
 	Update(*models.User, string) error
@@ -45,6 +47,20 @@ func (u *User) GetByID(id string) (*models.User, error) {
 		return nil, err
 	}
 
+	return u.getOne(rows)
+}
+
+func (u *User) GetByRoaster(id string) (*models.User, error) {
+	rows, err := u.sql.Select("SELECT id, passHash, firstName, lastName, email, phone, addressLine1, addressLine2, addressCity, addressState, addressZip, addressCountry, roasterId, profileUrl FROM user WHERE roasterId=?", id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return u.getOne(rows)
+}
+
+func (u *User) getOne(rows *sql.Rows) (*models.User, error) {
 	users, err := models.UserFromSQL(rows)
 	if err != nil {
 		return nil, err

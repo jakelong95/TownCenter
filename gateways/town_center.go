@@ -14,6 +14,7 @@ import (
 /*TownCenterI describes the functions for interacting with town center*/
 type TownCenterI interface {
 	GetUser(uuid.UUID) (*models.User, error)
+	GetUserByRoaster(uuid.UUID) (*models.User, error)
 	GetAllUsers(int, int) ([]*models.User, error)
 	UpdateUser(uuid.UUID, *models.User) error
 	GetRoaster(uuid.UUID) (*models.Roaster, error)
@@ -51,6 +52,19 @@ func NewTownCenter(config config.TownCenter) TownCenterI {
 /*GetUser  gets information about a user based on the user ID*/
 func (t *TownCenter) GetUser(id uuid.UUID) (*models.User, error) {
 	url := fmt.Sprintf("%suser/%s", t.url, id.String())
+
+	var user models.User
+	err := t.ServiceSend(http.MethodGet, url, nil, &user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+/*GetUserByRoaster returns the user associated with the given roaster ID*/
+func (t *TownCenter) GetUserByRoaster(id uuid.UUID) (*models.User, error) {
+	url := fmt.Sprintf("%sroaster/%s/user", t.url, id.String())
 
 	var user models.User
 	err := t.ServiceSend(http.MethodGet, url, nil, &user)
