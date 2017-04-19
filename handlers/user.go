@@ -186,6 +186,7 @@ func (u *User) Update(ctx *gin.Context) {
 	}
 
 	// merge existing user to json so empty fields don't override
+	user.PassHash = ""
 	err = mergo.Merge(&json, user)
 	if err != nil {
 		u.ServerError(ctx, err, json)
